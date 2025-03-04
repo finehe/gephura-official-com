@@ -1,0 +1,10 @@
+/* 为联系信息容器添加样式 */
+.contact-info {
+  background-color: #6B7280; /* 蓝灰色背景 */
+}
+
+.contact-info a,
+.contact-info div {
+  color: #000000 !important; /* 黑色文字 */
+  font-weight: bold;
+} 
