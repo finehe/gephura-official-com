@@ -8,11 +8,11 @@
         <div class="space-y-4">
           <div class="flex items-center gap-4">
             <i class="fas fa-envelope text-blue-600"></i>
-            <span class="contact-text">contact@gephura.com</span>
+            <span style="color: #000000 !important; font-weight: 600 !important;">contact@gephura.com</span>
           </div>
           <div class="flex items-center gap-4">
             <i class="fas fa-map-marker-alt text-blue-600"></i>
-            <span class="contact-text">上海市浦东新区荣科路118号凯瑞大厦3号楼1层</span>
+            <span style="color: #000000 !important; font-weight: 600 !important;">上海市浦东新区荣科路118号凯瑞大厦3号楼1层</span>
           </div>
         </div>
       </div>
@@ -22,14 +22,20 @@
 </template>
 
 <style scoped>
-.contact-text {
-  color: #000000;
-  font-weight: 500; /* 适当的字重 */
+/* 增加更强的选择器特异性 */
+:deep(.flex.items-center.gap-4 span) {
+  color: #000000 !important;
+  font-weight: 600 !important;
 }
 
-/* 针对联系信息的 span 元素 */
-.flex.items-center.gap-4 span {
+.contact-text {
   color: #000000 !important;
-  font-weight: 500;
+  font-weight: 600 !important;
+}
+
+/* 使用属性选择器增加特异性 */
+span[data-v-9cca3a4a] {
+  color: #000000 !important;
+  font-weight: 600 !important;
 }
 </style> 

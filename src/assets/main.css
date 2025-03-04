@@ -5,8 +5,18 @@
   font-weight: bold;
 }
 
-/* 针对联系信息部分的样式 */
-[data-v-9cca3a4a] .flex.items-center.gap-4 span {
+/* 针对联系信息部分的样式 - 尝试多种选择器组合 */
+.flex.items-center.gap-4 span,
+[data-v-9cca3a4a] span,
+[data-v-9cca3a4a] .flex.items-center.gap-4 span,
+.space-y-4 .flex span,
+span.contact-text {
   color: #000000 !important;
-  font-weight: 500;
+  font-weight: 600 !important;
+  text-shadow: 0 0 1px rgba(0,0,0,0.1) !important; /* 增加文字清晰度 */
+}
+
+/* 尝试覆盖任何可能的透明度设置 */
+.flex.items-center.gap-4 span {
+  opacity: 1 !important;
 } 
