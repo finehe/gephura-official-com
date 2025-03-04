@@ -3,7 +3,7 @@
   <div class="min-h-screen">
     <!-- 固定导航栏 -->
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 shadow-sm backdrop-blur-sm">
-      <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="w-full px-6 h-20 flex items-center justify-between">
         <div class="flex items-center">
           <img :src="logoUrl" alt="Gephura" class="h-12 md:h-12 h-10">
         </div>
@@ -34,10 +34,10 @@
       </div>
     </nav>
     <!-- Hero区域 -->
-    <div class="relative h-[600px] md:h-[600px] h-[500px] pt-20" style="top: 50px;">
+    <div class="relative h-[600px] md:h-[600px] h-[500px] pt-20 w-full" style="top: 50px;">
       <img :src="heroImage" alt="AI Innovation" class="w-full h-full object-cover">
       <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center">
-        <div class="container mx-auto px-6">
+        <div class="w-full px-6">
           <h1 class="md:text-5xl text-3xl font-bold text-white mb-6">{{ i18n[currentLang].hero.title }}</h1>
           <p class="md:text-xl text-lg text-white/90 mb-8 max-w-2xl">{{ i18n[currentLang].hero.subtitle }}</p>
           <button @click="scrollToSection('contact')"
@@ -49,12 +49,12 @@
       </div>
     </div>
     <!-- 关于我们 -->
-    <section id="about" class="py-20">
-      <div class="container mx-auto px-6">
+    <section id="about" class="py-20 w-full">
+      <div class="w-full px-6">
         <div class="flex items-center gap-12">
           <div class="flex-1">
             <h2 class="text-3xl font-bold mb-6">关于我们</h2>
-            <p class="text-gray-600 text-lg leading-relaxed">
+            <p class="text-gray-600 text-lg leading-relaxed text-left">
               在 Gephura，我们致力于通过 AI 技术推动企业数字化转型和提升运营效率。我们的核心价值观——创新、效率和可持续发展，指引我们在 AI 时代赋能企业。
             </p>
           </div>
@@ -65,8 +65,8 @@
       </div>
     </section>
     <!-- 核心服务 -->
-    <section id="services" class="py-20 bg-gray-50">
-      <div class="container mx-auto px-6">
+    <section id="services" class="py-20 bg-gray-50 w-full">
+      <div class="w-full px-6">
         <h2 class="text-3xl font-bold text-center mb-16">核心服务</h2>
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
           <div v-for="service in services" :key="service.id"
@@ -129,8 +129,8 @@
       </div>
     </section>
     <!-- 行业案例 -->
-    <section id="cases" class="py-20">
-      <div class="container mx-auto px-6">
+    <section id="cases" class="py-20 w-full">
+      <div class="w-full px-6">
         <h2 class="text-3xl font-bold text-center mb-16">行业案例</h2>
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
           <div v-for="case_ in cases" :key="case_.id"
@@ -145,13 +145,13 @@
       </div>
     </section>
     <!-- 联系我们 -->
-    <section id="contact" class="py-20 bg-gray-50">
-      <div class="container mx-auto px-6">
+    <section id="contact" class="py-20 bg-gray-50 w-full">
+      <div class="w-full px-6">
         <h2 class="text-3xl font-bold text-center mb-16">让我们共同塑造未来</h2>
         <div class="grid md:grid-cols-2 grid-cols-1 gap-12">
           <div class="flex items-center">
             <div>
-              <p class="text-lg text-gray-600 leading-relaxed mb-8">
+              <p class="text-lg text-gray-600 leading-relaxed mb-8 text-left">
                 准备好利用 AI 的力量推动您的业务了吗？我们的专家团队随时为您提供 AI 之旅的全程指导。立即联系我们，探索如何帮助您实现前所未有的增长和效率。
               </p>
               <div class="space-y-4">
@@ -193,8 +193,8 @@
       </div>
     </section>
     <!-- Footer -->
-    <footer class="bg-gray-50 py-8">
-      <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
+    <footer class="bg-gray-50 py-8 w-full">
+      <div class="w-full px-6 text-center text-gray-500 text-sm">
         <p>© 2025 Gephura. All rights reserved.</p>
         <p class="mt-2">京ICP备20250301号-1</p>
       </div>
