@@ -1,0 +1,10 @@
+/* 超级强制的选择器，确保颜色显示 */
+span[data-v-9cca3a4a],
+div[data-v-9cca3a4a] span,
+.flex.items-center.gap-4 span,
+.space-y-4 .flex span {
+  color: black !important;
+  font-weight: bold !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+} 
