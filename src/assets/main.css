@@ -3,4 +3,10 @@
 .contact-address {
   color: #000000 !important;
   font-weight: bold;
+}
+
+/* 针对联系信息部分的样式 */
+[data-v-9cca3a4a] .flex.items-center.gap-4 span {
+  color: #000000 !important;
+  font-weight: 500;
 } 
