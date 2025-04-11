@@ -74,7 +74,7 @@
             <img :src="service.image" :alt="service.title" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-xl font-semibold mb-4">{{ service.title }}</h3>
-              <p class="text-gray-600 mb-6">{{ service.description }}</p>
+              <p class="text-gray-600 mb-6 min-h-[4.5rem] line-clamp-3">{{ service.description }}</p>
               <button @click="showServiceDetails(service)"
                 class="!rounded-button text-blue-600 hover:bg-blue-50 px-6 py-2 border border-blue-600 transition-all whitespace-nowrap">
                 了解更多
@@ -161,7 +161,7 @@
                 </div>
                 <div class="flex items-center gap-4">
                   <i class="fas fa-map-marker-alt text-blue-600"></i>
-                  <span>上海市浦东新区荣科路118号凯瑞大厦3号楼1层</span>
+                  <span>上海市浦东新区张江高科科苑路151号华强大厦三楼B86</span>
                 </div>
               </div>
             </div>
