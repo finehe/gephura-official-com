@@ -161,7 +161,7 @@
                 </div>
                 <div class="flex items-center gap-4">
                   <i class="fas fa-map-marker-alt text-blue-600"></i>
-                  <span>上海市浦东新区张江高科科苑路151号华强大厦三楼B86</span>
+                  <span>上海市浦东新区张江高科科苑路151号华强大厦三楼</span>
                 </div>
               </div>
             </div>
@@ -196,7 +196,6 @@
     <footer class="bg-gray-50 py-8 w-full">
       <div class="w-full px-6 text-center text-gray-500 text-sm">
         <p>© 2025 Gephura. All rights reserved.</p>
-        <p class="mt-2">京ICP备20250301号-1</p>
       </div>
     </footer>
     <!-- 返回顶部按钮 -->
