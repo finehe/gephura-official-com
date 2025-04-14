@@ -157,7 +157,7 @@
               <div class="space-y-4">
                 <div class="flex items-center gap-4">
                   <i class="fas fa-envelope text-blue-600"></i>
-                  <span>contact@gephura.com</span>
+                  <span>info@gephura.cn</span>
                 </div>
                 <div class="flex items-center gap-4">
                   <i class="fas fa-map-marker-alt text-blue-600"></i>
