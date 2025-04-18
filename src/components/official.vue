@@ -158,7 +158,7 @@
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-phone text-blue-600 text-2xl mb-4"></i>
               <span class="text-gray-700 font-medium">联系电话</span>
-              <a href="tel:021-12345678" class="text-blue-600 hover:text-blue-800 mt-2">198-2190-2019</a>
+              <a href="tel:19821902019" class="text-blue-600 hover:text-blue-800 mt-2">198-2190-2019</a>
             </div>
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
