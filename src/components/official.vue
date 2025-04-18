@@ -148,45 +148,34 @@
     <section id="contact" class="py-20 bg-gray-50 w-full">
       <div class="w-full px-6">
         <h2 class="text-3xl font-bold text-center mb-16">让我们共同塑造未来</h2>
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-12">
-          <div class="flex items-center">
-            <div>
-              <p class="text-lg text-gray-600 leading-relaxed mb-8 text-left">
-                准备好利用 AI 的力量推动您的业务了吗？我们的专家团队随时为您提供 AI 之旅的全程指导。立即联系我们，探索如何帮助您实现前所未有的增长和效率。
-              </p>
-              <div class="space-y-4">
-                <div class="flex items-center gap-4">
-                  <i class="fas fa-envelope text-blue-600"></i>
-                  <span>info@gephura.cn</span>
-                </div>
-                <div class="flex items-center gap-4">
-                  <i class="fas fa-map-marker-alt text-blue-600"></i>
-                  <span>上海市浦东新区张江高科科苑路151号华强大厦三楼</span>
-                </div>
-              </div>
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-12">
+            <p class="text-lg text-gray-600 leading-relaxed">
+              准备好利用 AI 的力量推动您的业务了吗？我们的专家团队随时为您提供 AI 之旅的全程指导。立即联系我们，探索如何帮助您实现前所未有的增长和效率。
+            </p>
+          </div>
+          <div class="grid md:grid-cols-3 grid-cols-1 gap-8">
+            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
+              <i class="fas fa-phone text-blue-600 text-2xl mb-4"></i>
+              <span class="text-gray-700 font-medium">联系电话</span>
+              <a href="tel:021-12345678" class="text-blue-600 hover:text-blue-800 mt-2">198-2190-2019</a>
+            </div>
+            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
+              <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
+              <span class="text-gray-700 font-medium">电子邮箱</span>
+              <a href="mailto:info@gephura.cn" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.cn</a>
+            </div>
+            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
+              <i class="fas fa-map-marker-alt text-blue-600 text-2xl mb-4"></i>
+              <span class="text-gray-700 font-medium">公司地址</span>
+              <span class="text-gray-600 text-center mt-2">上海市浦东新区张江高科科苑路151号华强大厦三楼</span>
             </div>
           </div>
-          <div>
-            <form @submit.prevent="submitForm" class="space-y-6">
-              <div>
-                <input type="text" v-model="form.name" :placeholder="i18n[currentLang].contact.form.name"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
-              </div>
-              <div>
-                <input type="email" v-model="form.email" :placeholder="i18n[currentLang].contact.form.email"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
-              </div>
-              <div>
-                <textarea v-model="form.message" :placeholder="i18n[currentLang].contact.form.message" rows="4"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"></textarea>
-              </div>
-              <button type="submit"
-                class="!rounded-button w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white px-6 py-3 hover:from-blue-700 hover:to-blue-900 transition-all whitespace-nowrap">
-                {{ i18n[currentLang].contact.form.submit }}
-              </button>
-            </form>
-            <div v-if="showSuccess" class="mt-4 text-green-600 text-center">
-              {{ i18n[currentLang].success }}
+          <div class="mt-12 flex flex-col items-center">
+            <h3 class="text-xl font-semibold mb-6">扫码添加企业微信</h3>
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <img src="/src/assets/wechat-qr.png" alt="企业微信二维码" class="w-40 h-40 object-contain">
+              <p class="text-gray-500 text-sm mt-4 text-center">扫一扫，立即咨询</p>
             </div>
           </div>
         </div>
@@ -196,6 +185,7 @@
     <footer class="bg-gray-50 py-8 w-full">
       <div class="w-full px-6 text-center text-gray-500 text-sm">
         <p>© 2025 Gephura. All rights reserved.</p>
+        <p class="mt-2">沪ICP备2025115766号-2</p>
       </div>
     </footer>
     <!-- 返回顶部按钮 -->
@@ -276,15 +266,8 @@ const i18n = {
     },
     contact: {
       title: '让我们共同塑造未来',
-      description: '准备好利用 AI 的力量推动您的业务了吗？我们的专家团队随时为您提供 AI 之旅的全程指导。立即联系我们，探索如何帮助您实现前所未有的增长和效率。',
-      form: {
-        name: '您的姓名',
-        email: '您的邮箱',
-        message: '告诉我们您的 AI 愿景',
-        submit: '提交'
-      }
-    },
-    success: '提交成功！'
+      description: '准备好利用 AI 的力量推动您的业务了吗？我们的专家团队随时为您提供 AI 之旅的全程指导。立即联系我们，探索如何帮助您实现前所未有的增长和效率。'
+    }
   },
   en: {
     nav: {
@@ -339,15 +322,8 @@ const i18n = {
     },
     contact: {
       title: 'Let\'s Shape the Future Together',
-      description: 'Ready to leverage the power of AI for your business? Our expert team is here to guide you through your AI journey. Contact us now to explore how we can help you achieve unprecedented growth and efficiency.',
-      form: {
-        name: 'Your Name',
-        email: 'Your Email',
-        message: 'Tell us about your AI vision',
-        submit: 'Submit'
-      }
-    },
-    success: 'Submitted successfully!'
+      description: 'Ready to leverage the power of AI for your business? Our expert team is here to guide you through your AI journey. Contact us now to explore how we can help you achieve unprecedented growth and efficiency.'
+    }
   }
 };
 const logoUrl = logoImage;
@@ -403,11 +379,6 @@ const cases = [
     image: 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
   }
 ];
-const form = ref({
-  name: '',
-  email: '',
-  message: ''
-});
 const isMenuOpen = ref(false);
 
 const toggleMenu = () => {
@@ -442,7 +413,6 @@ const scrollToSection = (id: string) => {
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
-const showSuccess = ref(false);
 const getProcessIcon = (index: number) => {
   const icons = ['fa-chart-line', 'fa-filter', 'fa-rocket'];
   return icons[index];
@@ -505,19 +475,6 @@ const showServiceDetails = (service: any) => {
   };
   currentService.value = serviceDetails[service.title as keyof typeof serviceDetails];
   showServiceModal.value = true;
-};
-const submitForm = () => {
-  // 这里添加表单提交逻辑
-  console.log('Form submitted:', form.value);
-  form.value = {
-    name: '',
-    email: '',
-    message: ''
-  };
-  showSuccess.value = true;
-  setTimeout(() => {
-    showSuccess.value = false;
-  }, 3000);
 };
 // 监听滚动
 window.addEventListener('scroll', () => {
