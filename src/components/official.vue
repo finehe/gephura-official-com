@@ -8,15 +8,38 @@
           <img :src="logoUrl" alt="Gephura" class="h-12 md:h-12 h-10">
         </div>
         <!-- 移动端菜单按钮 -->
-        <button @click="toggleMenu" class="md:hidden text-gray-600 hover:text-blue-600 transition-colors">
-          <i class="fas" :class="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
-        </button>
+        <div class="flex items-center gap-4">
+          <button @click="toggleMenu" class="md:hidden text-gray-600 hover:text-blue-600 transition-colors">
+            <i class="fas" :class="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+          </button>
+        </div>
         <!-- 桌面端导航 -->
         <div class="hidden md:flex items-center space-x-8">
           <a v-for="item in navItems" :key="item.id" :class="['hover:text-blue-600 transition-colors cursor-pointer',
             currentNav === item.id ? 'text-blue-600' : 'text-gray-700']" @click="scrollToSection(item.id)">
             {{ i18n[currentLang].nav[item.id] }}
           </a>
+          <!-- 语言切换按钮 -->
+          <div class="relative">
+            <button @click="toggleLangMenu" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+              <i class="fas fa-globe"></i>
+              <span>{{ currentLang === 'en' ? 'EN' : '中文' }}</span>
+              <i class="fas fa-chevron-down text-xs"></i>
+            </button>
+            <!-- 语言切换下拉菜单 -->
+            <div v-show="isLangMenuOpen" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2">
+              <button @click="currentLang = 'en'" 
+                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors', 
+                currentLang === 'en' ? 'text-blue-600' : 'text-gray-600']">
+                English
+              </button>
+              <button @click="currentLang = 'cn'"
+                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors',
+                currentLang === 'cn' ? 'text-blue-600' : 'text-gray-600']">
+                中文
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <!-- 移动端菜单 -->
@@ -30,6 +53,24 @@
             currentNav === item.id ? 'text-blue-600' : 'text-gray-700']" @click="handleMobileNavClick(item.id)">
             {{ i18n[currentLang].nav[item.id] }}
           </a>
+          <!-- 移动端语言切换按钮 -->
+          <div class="border-t pt-4 mt-4">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">{{ currentLang === 'en' ? 'Language' : '语言' }}</span>
+              <div class="flex gap-2">
+                <button @click="currentLang = 'en'" 
+                  :class="['px-3 py-1 rounded-md transition-colors', 
+                  currentLang === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+                  EN
+                </button>
+                <button @click="currentLang = 'cn'"
+                  :class="['px-3 py-1 rounded-md transition-colors',
+                  currentLang === 'cn' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+                  中文
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -53,9 +94,9 @@
       <div class="w-full px-6">
         <div class="flex items-center gap-12">
           <div class="flex-1">
-            <h2 class="text-3xl font-bold mb-6">关于我们</h2>
+            <h2 class="text-3xl font-bold mb-6">{{ i18n[currentLang].about.title }}</h2>
             <p class="text-gray-600 text-lg leading-relaxed text-left">
-              在 Gephura，我们致力于通过 AI 技术推动企业数字化转型和提升运营效率。我们的核心价值观——创新、效率和可持续发展，指引我们在 AI 时代赋能企业。
+              {{ i18n[currentLang].about.content }}
             </p>
           </div>
           <div class="flex-1">
@@ -67,17 +108,17 @@
     <!-- 核心服务 -->
     <section id="services" class="py-20 bg-gray-50 w-full">
       <div class="w-full px-6">
-        <h2 class="text-3xl font-bold text-center mb-16">核心服务</h2>
+        <h2 class="text-3xl font-bold text-center mb-16">{{ i18n[currentLang].services.title }}</h2>
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
-          <div v-for="service in services" :key="service.id"
+          <div v-for="service in i18n[currentLang].services.items" :key="service.title"
             class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
-            <img :src="service.image" :alt="service.title" class="w-full h-48 object-cover">
+            <img :src="getServiceImage(service.title)" :alt="service.title" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-xl font-semibold mb-4">{{ service.title }}</h3>
               <p class="text-gray-600 mb-6 min-h-[4.5rem] line-clamp-3">{{ service.description }}</p>
               <button @click="showServiceDetails(service)"
                 class="!rounded-button text-blue-600 hover:bg-blue-50 px-6 py-2 border border-blue-600 transition-all whitespace-nowrap">
-                了解更多
+                {{ i18n[currentLang].services.more }}
               </button>
               <!-- 服务详情弹窗 -->
               <div v-if="showServiceModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
@@ -131,11 +172,11 @@
     <!-- 行业案例 -->
     <section id="cases" class="py-20 w-full">
       <div class="w-full px-6">
-        <h2 class="text-3xl font-bold text-center mb-16">行业案例</h2>
+        <h2 class="text-3xl font-bold text-center mb-16">{{ i18n[currentLang].cases.title }}</h2>
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
-          <div v-for="case_ in cases" :key="case_.id"
+          <div v-for="case_ in i18n[currentLang].cases.items" :key="case_.title"
             class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
-            <img :src="case_.image" :alt="case_.title" class="w-full h-48 object-cover">
+            <img :src="getCaseImage(case_.title)" :alt="case_.title" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-xl font-semibold mb-4">{{ case_.title }}</h3>
               <p class="text-gray-600">{{ case_.description }}</p>
@@ -147,35 +188,35 @@
     <!-- 联系我们 -->
     <section id="contact" class="py-20 bg-gray-50 w-full">
       <div class="w-full px-6">
-        <h2 class="text-3xl font-bold text-center mb-16">让我们共同塑造未来</h2>
+        <h2 class="text-3xl font-bold text-center mb-16">{{ i18n[currentLang].contact.title }}</h2>
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-12">
             <p class="text-lg text-gray-600 leading-relaxed">
-              准备好利用 AI 的力量推动您的业务了吗？我们的专家团队随时为您提供 AI 之旅的全程指导。立即联系我们，探索如何帮助您实现前所未有的增长和效率。
+              {{ i18n[currentLang].contact.description }}
             </p>
           </div>
           <div class="grid md:grid-cols-3 grid-cols-1 gap-8">
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-phone text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">联系电话</span>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Phone' : '联系电话' }}</span>
               <a href="tel:19821902019" class="text-blue-600 hover:text-blue-800 mt-2">198-2190-2019</a>
             </div>
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">电子邮箱</span>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Email' : '电子邮箱' }}</span>
               <a href="mailto:info@gephura.cn" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.cn</a>
             </div>
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-map-marker-alt text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">公司地址</span>
-              <span class="text-gray-600 text-center mt-2">上海市浦东新区张江高科科苑路151号华强大厦三楼</span>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Address' : '公司地址' }}</span>
+              <span class="text-gray-600 text-center mt-2">{{ currentLang === 'en' ? '3rd Floor, Huaqiang Building, 151 Keyuan Road, Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai, China' : '上海市浦东新区张江高科科苑路151号华强大厦三楼' }}</span>
             </div>
           </div>
           <div class="mt-12 flex flex-col items-center">
-            <h3 class="text-xl font-semibold mb-6">扫码添加企业微信</h3>
+            <h3 class="text-xl font-semibold mb-6">{{ currentLang === 'en' ? 'Scan QR Code to Add WeChat' : '扫码添加企业微信' }}</h3>
             <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <img src="/src/assets/wechat-qr.png" alt="企业微信二维码" class="w-40 h-40 object-contain">
-              <p class="text-gray-500 text-sm mt-4 text-center">扫一扫，立即咨询</p>
+              <img src="/src/assets/wechat-qr.png" :alt="currentLang === 'en' ? 'WeChat QR Code' : '企业微信二维码'" class="w-40 h-40 object-contain">
+              <p class="text-gray-500 text-sm mt-4 text-center">{{ currentLang === 'en' ? 'Scan to contact us' : '扫一扫，立即咨询' }}</p>
             </div>
           </div>
         </div>
@@ -185,7 +226,7 @@
     <footer class="bg-gray-50 py-8 w-full">
       <div class="w-full px-6 text-center text-gray-500 text-sm">
         <p>© 2025 Gephura. All rights reserved.</p>
-        <p class="mt-2">沪ICP备2025115766号-2</p>
+        <p v-if="currentLang === 'cn'" class="mt-2">沪ICP备2025115766号-2</p>
       </div>
     </footer>
     <!-- 返回顶部按钮 -->
@@ -196,7 +237,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 // 导入logo图片
 import logoImage from '../assets/web-logo.svg';
@@ -211,7 +252,8 @@ const currentService = ref({
   blocks: [] as { title: string; desc: string }[]
 });
 const showBackTop = ref(false);
-const currentLang = ref('cn' as const);
+type Language = 'en' | 'cn';
+const currentLang = ref<Language>('en');
 const i18n = {
   cn: {
     nav: {
@@ -380,6 +422,7 @@ const cases = [
   }
 ];
 const isMenuOpen = ref(false);
+const isLangMenuOpen = ref(false);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -442,6 +485,21 @@ const showServiceDetails = (service: any) => {
       ],
       blocks: []
     },
+    'AI Consulting': {
+      title: 'AI Consulting',
+      content: 'Addressing enterprise pain points in AI applications by providing comprehensive scenario diagnosis and planning services. We evaluate the digital maturity of business processes and identify high-value AI application scenarios to achieve cost savings, efficiency improvements, and risk control. We offer a 12-week rapid validation program design to help enterprises avoid blind investments and lock in quantifiable improvement goals.',
+      features: [
+        'Business Process Digital Maturity Assessment',
+        'High-Value AI Application Scenario Screening (Cost Savings/Efficiency Improvement/Risk Control)',
+        '12-Week Rapid Validation Program Design'
+      ],
+      process: [
+        { title: 'Business Process Assessment', desc: 'Evaluate enterprise digital foundation' },
+        { title: 'Scenario Screening', desc: 'Identify AI application potential areas' },
+        { title: 'Rapid Validation', desc: 'Validate program feasibility within 12 weeks' }
+      ],
+      blocks: []
+    },
     '定制化 AI 应用开发': {
       title: '定制化 AI 应用开发',
       content: '针对传统软件改造成本高、现有SaaS不符合业务需求的问题，提供轻量级AI工具开发服务。我们的特点是模块化开发，基于开源框架快速搭建。我们采用渐进式迭代，从单功能MVP到系统集成。典型应用场景包括直播电商智能话术系统和企业微信定制化商城等。',
@@ -455,6 +513,21 @@ const showServiceDetails = (service: any) => {
         { title: '模块化', desc: '快速搭建，灵活组合' },
         { title: '渐进式', desc: 'MVP验证，逐步集成' },
         { title: '定制化', desc: '满足特定业务需求' }
+      ]
+    },
+    'Custom AI Development': {
+      title: 'Custom AI Development',
+      content: 'Addressing the high cost of traditional software transformation and the mismatch between existing SaaS and business needs by providing lightweight AI tool development services. Our approach features modular development based on open-source frameworks for rapid deployment. We employ progressive iteration, from single-function MVP to system integration. Typical application scenarios include live e-commerce intelligent dialogue systems and WeChat Work customized malls.',
+      features: [
+        'Modular Development: Rapid deployment based on open-source frameworks',
+        'Progressive Iteration: From single-function MVP to system integration',
+        'Typical Scenarios: ✔ Live E-commerce Intelligent Dialogue System ✔ WeChat Work Customized Mall'
+      ],
+      process: [],
+      blocks: [
+        { title: 'Modular', desc: 'Rapid deployment, flexible combination' },
+        { title: 'Progressive', desc: 'MVP validation, gradual integration' },
+        { title: 'Customized', desc: 'Meet specific business needs' }
       ]
     },
     'AI 技术与业务运营支持': {
@@ -471,11 +544,71 @@ const showServiceDetails = (service: any) => {
         { title: '模型优化', desc: '提升AI算法性能' },
         { title: '效果复盘', desc: '每月评估' }
       ]
+    },
+    'AI Tech & Operations Support': {
+      title: 'AI Tech & Operations Support',
+      content: 'We address the lack of continuous support and difficulty in maintaining effectiveness after technical vendor delivery by providing technical operations support services. We offer quarterly service packages including data monitoring, model optimization, and anomaly response. We align with business metrics, conduct monthly effectiveness review meetings, and facilitate knowledge transfer to help enterprises build their own team capabilities.',
+      features: [
+        'Quarterly Service Package: Data Monitoring + Model Optimization + Anomaly Response',
+        'Business Metrics Alignment: Monthly Effectiveness Review Meetings',
+        'Knowledge Transfer: Enterprise Team Capability Building'
+      ],
+      process: [],
+      blocks: [
+        { title: 'Data Monitoring', desc: 'Continuous tracking of key metrics' },
+        { title: 'Model Optimization', desc: 'Enhance AI algorithm performance' },
+        { title: 'Effectiveness Review', desc: 'Monthly assessment' }
+      ]
     }
   };
   currentService.value = serviceDetails[service.title as keyof typeof serviceDetails];
   showServiceModal.value = true;
 };
+
+// 获取服务图片
+const getServiceImage = (title: string) => {
+  const imageMap = {
+    'AI 应用咨询': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    '定制化 AI 应用开发': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
+    'AI 技术与业务运营支持': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
+    'AI Consulting': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    'Custom AI Development': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
+    'AI Tech & Operations Support': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
+  };
+  return imageMap[title as keyof typeof imageMap];
+};
+
+// 获取案例图片
+const getCaseImage = (title: string) => {
+  const imageMap = {
+    '电商 AI 解决方案': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
+    '医疗 AI 系统': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
+    '制造业 AI 解决方案': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
+    'E-commerce AI Solution': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
+    'Healthcare AI System': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
+    'Manufacturing AI Solution': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
+  };
+  return imageMap[title as keyof typeof imageMap];
+};
+
+const toggleLangMenu = () => {
+  isLangMenuOpen.value = !isLangMenuOpen.value;
+};
+
+// 点击外部关闭下拉菜单
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      isLangMenuOpen.value = false;
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', () => {});
+});
+
 // 监听滚动
 window.addEventListener('scroll', () => {
   showBackTop.value = window.scrollY > 300;
