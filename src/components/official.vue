@@ -381,46 +381,6 @@ const navItems = [
   { id: 'contact' as NavItemId, name: '联系我们' }
 ];
 
-const services = [
-  {
-    id: 1,
-    title: 'AI 应用咨询',
-    description: '为企业提供 AI 战略规划和落地方案，助力企业数字化转型',
-    image: 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg'
-  },
-  {
-    id: 2,
-    title: '定制化 AI 应用开发',
-    description: '根据企业需求开发专属 AI 解决方案，提升业务效率',
-    image: 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg'
-  },
-  {
-    id: 3,
-    title: 'AI 技术与业务运营支持',
-    description: '提供全方位的 AI 技术支持和运营优化服务',
-    image: 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
-  }
-];
-const cases = [
-  {
-    id: 1,
-    title: '电商 AI 解决方案',
-    description: '电商革新，通过 AI 驱动的个性化推荐和库存管理，变革在线零售体验。',
-    image: 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg'
-  },
-  {
-    id: 2,
-    title: '医疗 AI 系统',
-    description: '医疗创新，利用 AI 驱动的系统提升患者护理质量和医院运营效率。',
-    image: 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg'
-  },
-  {
-    id: 3,
-    title: '制造业 AI 解决方案',
-    description: '制造卓越，通过 AI 和机器学习优化生产流程和质量控制。',
-    image: 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
-  }
-];
 const isMenuOpen = ref(false);
 const isLangMenuOpen = ref(false);
 
@@ -453,13 +413,16 @@ const scrollToSection = (id: string) => {
   }
   currentNav.value = id;
 };
+
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
+
 const getProcessIcon = (index: number) => {
   const icons = ['fa-chart-line', 'fa-filter', 'fa-rocket'];
   return icons[index];
 };
+
 const getBlockColor = (index: number) => {
   const colors = [
     'from-blue-500 to-blue-700',
@@ -468,6 +431,7 @@ const getBlockColor = (index: number) => {
   ];
   return colors[index];
 };
+
 const showServiceDetails = (service: any) => {
   const serviceDetails = {
     'AI 应用咨询': {
