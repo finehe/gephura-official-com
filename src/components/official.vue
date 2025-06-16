@@ -23,7 +23,7 @@
           <div class="relative">
             <button @click="toggleLangMenu" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
               <i class="fas fa-globe"></i>
-              <span>{{ currentLang === 'en' ? 'EN' : '中文' }}</span>
+              <span>{{ currentLang === 'en' ? 'EN' : currentLang === 'cn' ? '中文' : 'VI' }}</span>
               <i class="fas fa-chevron-down text-xs"></i>
             </button>
             <!-- 语言切换下拉菜单 -->
@@ -37,6 +37,11 @@
                 :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors',
                 currentLang === 'cn' ? 'text-blue-600' : 'text-gray-600']">
                 中文
+              </button>
+              <button @click="currentLang = 'vi'"
+                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors',
+                currentLang === 'vi' ? 'text-blue-600' : 'text-gray-600']">
+                Tiếng Việt
               </button>
             </div>
           </div>
@@ -56,7 +61,7 @@
           <!-- 移动端语言切换按钮 -->
           <div class="border-t pt-4 mt-4">
             <div class="flex items-center justify-between">
-              <span class="text-gray-600">{{ currentLang === 'en' ? 'Language' : '语言' }}</span>
+              <span class="text-gray-600">{{ currentLang === 'en' ? 'Language' : currentLang === 'cn' ? '语言' : 'Ngôn ngữ' }}</span>
               <div class="flex gap-2">
                 <button @click="currentLang = 'en'" 
                   :class="['px-3 py-1 rounded-md transition-colors', 
@@ -67,6 +72,11 @@
                   :class="['px-3 py-1 rounded-md transition-colors',
                   currentLang === 'cn' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
                   中文
+                </button>
+                <button @click="currentLang = 'vi'"
+                  :class="['px-3 py-1 rounded-md transition-colors',
+                  currentLang === 'vi' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+                  VI
                 </button>
               </div>
             </div>
@@ -198,25 +208,37 @@
           <div class="grid md:grid-cols-3 grid-cols-1 gap-8">
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-phone text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Phone' : '联系电话' }}</span>
-              <a href="tel:19821902019" class="text-blue-600 hover:text-blue-800 mt-2">198-2190-2019</a>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Phone' : currentLang === 'cn' ? '联系电话' : 'Điện thoại' }}</span>
+              <a href="tel:+8619821902019" class="text-blue-600 hover:text-blue-800 mt-2">+86 198-2190-2019</a>
             </div>
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Email' : '电子邮箱' }}</span>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Email' : currentLang === 'cn' ? '电子邮箱' : 'Email' }}</span>
               <a href="mailto:info@gephura.cn" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.cn</a>
             </div>
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-map-marker-alt text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Address' : '公司地址' }}</span>
-              <span class="text-gray-600 text-center mt-2">{{ currentLang === 'en' ? '3rd Floor, Huaqiang Building, 151 Keyuan Road, Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai, China' : '上海市浦东新区张江高科科苑路151号华强大厦三楼' }}</span>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Address' : currentLang === 'cn' ? '公司地址' : 'Địa chỉ' }}</span>
+              <span class="text-gray-600 text-center mt-2">{{ 
+                currentLang === 'en' ? '3rd Floor, Huaqiang Building, 151 Keyuan Road, Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai, China' : 
+                currentLang === 'cn' ? '上海市浦东新区张江高科科苑路151号华强大厦三楼' :
+                'Technopark Tower, XWQR+FV, Vinhomes Ocean Park, Gia Lam, Ha Noi, Vietnam'
+              }}</span>
             </div>
           </div>
           <div class="mt-12 flex flex-col items-center">
-            <h3 class="text-xl font-semibold mb-6">{{ currentLang === 'en' ? 'Scan QR Code to Add WeChat' : '扫码添加企业微信' }}</h3>
+            <h3 class="text-xl font-semibold mb-6">{{ 
+              currentLang === 'en' ? 'Scan QR Code to Add WeChat' : 
+              currentLang === 'cn' ? '扫码添加企业微信' :
+              'Quét mã QR để thêm WeChat doanh nghiệp'
+            }}</h3>
             <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <img src="/src/assets/wechat-qr.png" :alt="currentLang === 'en' ? 'WeChat QR Code' : '企业微信二维码'" class="w-40 h-40 object-contain">
-              <p class="text-gray-500 text-sm mt-4 text-center">{{ currentLang === 'en' ? 'Scan to contact us' : '扫一扫，立即咨询' }}</p>
+              <img src="/src/assets/wechat-qr.png" :alt="currentLang === 'en' ? 'WeChat QR Code' : currentLang === 'cn' ? '企业微信二维码' : 'Mã QR WeChat doanh nghiệp'" class="w-40 h-40 object-contain">
+              <p class="text-gray-500 text-sm mt-4 text-center">{{ 
+                currentLang === 'en' ? 'Scan to contact us' : 
+                currentLang === 'cn' ? '扫一扫，立即咨询' :
+                'Quét để liên hệ với chúng tôi'
+              }}</p>
             </div>
           </div>
         </div>
@@ -252,7 +274,7 @@ const currentService = ref({
   blocks: [] as { title: string; desc: string }[]
 });
 const showBackTop = ref(false);
-type Language = 'en' | 'cn';
+type Language = 'en' | 'cn' | 'vi';
 const currentLang = ref<Language>('en');
 const i18n = {
   cn: {
@@ -366,6 +388,62 @@ const i18n = {
       title: 'Let\'s Shape the Future Together',
       description: 'Ready to leverage the power of AI for your business? Our expert team is here to guide you through your AI journey. Contact us now to explore how we can help you achieve unprecedented growth and efficiency.'
     }
+  },
+  vi: {
+    nav: {
+      about: 'Về chúng tôi',
+      services: 'Dịch vụ',
+      cases: 'Dự án',
+      contact: 'Liên hệ'
+    },
+    hero: {
+      title: 'Thúc đẩy đổi mới và tăng trưởng thông qua AI',
+      subtitle: 'Cung cấp giải pháp tiên tiến và hướng dẫn chuyên môn để giúp doanh nghiệp phát triển trong kỷ nguyên AI.',
+      cta: 'Bắt đầu ngay'
+    },
+    about: {
+      title: 'Về chúng tôi',
+      content: 'Tại Gephura, chúng tôi cam kết thúc đẩy chuyển đổi số và hiệu quả hoạt động thông qua công nghệ AI. Các giá trị cốt lõi của chúng tôi - đổi mới, hiệu quả và phát triển bền vững - hướng dẫn chúng tôi trong việc trao quyền cho doanh nghiệp trong kỷ nguyên AI.'
+    },
+    services: {
+      title: 'Dịch vụ cốt lõi',
+      items: [
+        {
+          title: 'Tư vấn AI',
+          description: 'Cung cấp kế hoạch chiến lược AI và giải pháp triển khai để hỗ trợ chuyển đổi số doanh nghiệp'
+        },
+        {
+          title: 'Phát triển AI tùy chỉnh',
+          description: 'Phát triển giải pháp AI độc quyền dựa trên nhu cầu doanh nghiệp để cải thiện hiệu quả kinh doanh'
+        },
+        {
+          title: 'Hỗ trợ kỹ thuật & vận hành AI',
+          description: 'Cung cấp dịch vụ hỗ trợ kỹ thuật AI toàn diện và tối ưu hóa vận hành'
+        }
+      ],
+      more: 'Tìm hiểu thêm'
+    },
+    cases: {
+      title: 'Dự án ngành',
+      items: [
+        {
+          title: 'Giải pháp AI thương mại điện tử',
+          description: 'Cách mạng hóa bán lẻ trực tuyến thông qua đề xuất cá nhân hóa và quản lý kho được điều khiển bởi AI.'
+        },
+        {
+          title: 'Hệ thống AI y tế',
+          description: 'Đổi mới chăm sóc sức khỏe với hệ thống được hỗ trợ bởi AI để nâng cao chất lượng chăm sóc bệnh nhân và hoạt động bệnh viện.'
+        },
+        {
+          title: 'Giải pháp AI sản xuất',
+          description: 'Đạt được sự xuất sắc trong sản xuất thông qua AI và máy học để tối ưu hóa quy trình và chất lượng.'
+        }
+      ]
+    },
+    contact: {
+      title: 'Hãy cùng nhau kiến tạo tương lai',
+      description: 'Sẵn sàng tận dụng sức mạnh của AI cho doanh nghiệp của bạn? Đội ngũ chuyên gia của chúng tôi luôn sẵn sàng hướng dẫn bạn trong hành trình AI. Liên hệ với chúng tôi ngay để khám phá cách chúng tôi có thể giúp bạn đạt được tăng trưởng và hiệu quả chưa từng có.'
+    }
   }
 };
 const logoUrl = logoImage;
@@ -464,6 +542,21 @@ const showServiceDetails = (service: any) => {
       ],
       blocks: []
     },
+    'Tư vấn AI': {
+      title: 'Tư vấn AI',
+      content: 'Giải quyết các điểm đau của doanh nghiệp trong ứng dụng AI bằng cách cung cấp dịch vụ chẩn đoán và lập kế hoạch kịch bản toàn diện. Chúng tôi đánh giá mức độ trưởng thành số của quy trình kinh doanh và xác định các kịch bản ứng dụng AI có giá trị cao để đạt được tiết kiệm chi phí, cải thiện hiệu quả và kiểm soát rủi ro. Chúng tôi cung cấp thiết kế chương trình xác thực nhanh 12 tuần để giúp doanh nghiệp tránh đầu tư mù quáng và khóa các mục tiêu cải tiến có thể định lượng.',
+      features: [
+        'Đánh giá mức độ trưởng thành số của quy trình kinh doanh',
+        'Sàng lọc kịch bản ứng dụng AI có giá trị cao (Tiết kiệm chi phí/Cải thiện hiệu quả/Kiểm soát rủi ro)',
+        'Thiết kế chương trình xác thực nhanh 12 tuần'
+      ],
+      process: [
+        { title: 'Đánh giá quy trình kinh doanh', desc: 'Đánh giá nền tảng số của doanh nghiệp' },
+        { title: 'Sàng lọc kịch bản', desc: 'Xác định các lĩnh vực tiềm năng ứng dụng AI' },
+        { title: 'Xác thực nhanh', desc: 'Xác thực tính khả thi của chương trình trong vòng 12 tuần' }
+      ],
+      blocks: []
+    },
     '定制化 AI 应用开发': {
       title: '定制化 AI 应用开发',
       content: '针对传统软件改造成本高、现有SaaS不符合业务需求的问题，提供轻量级AI工具开发服务。我们的特点是模块化开发，基于开源框架快速搭建。我们采用渐进式迭代，从单功能MVP到系统集成。典型应用场景包括直播电商智能话术系统和企业微信定制化商城等。',
@@ -492,6 +585,21 @@ const showServiceDetails = (service: any) => {
         { title: 'Modular', desc: 'Rapid deployment, flexible combination' },
         { title: 'Progressive', desc: 'MVP validation, gradual integration' },
         { title: 'Customized', desc: 'Meet specific business needs' }
+      ]
+    },
+    'Phát triển AI tùy chỉnh': {
+      title: 'Phát triển AI tùy chỉnh',
+      content: 'Giải quyết chi phí chuyển đổi phần mềm truyền thống cao và sự không phù hợp giữa SaaS hiện có và nhu cầu kinh doanh bằng cách cung cấp dịch vụ phát triển công cụ AI nhẹ. Phương pháp của chúng tôi có tính năng phát triển mô-đun dựa trên các framework mã nguồn mở để triển khai nhanh chóng. Chúng tôi sử dụng lặp lại tiến bộ, từ MVP chức năng đơn lẻ đến tích hợp hệ thống. Các kịch bản ứng dụng điển hình bao gồm hệ thống đối thoại thông minh thương mại điện tử trực tiếp và cửa hàng tùy chỉnh WeChat Work.',
+      features: [
+        'Phát triển mô-đun: Triển khai nhanh dựa trên các framework mã nguồn mở',
+        'Lặp lại tiến bộ: Từ MVP chức năng đơn lẻ đến tích hợp hệ thống',
+        'Kịch bản điển hình: ✔ Hệ thống đối thoại thông minh thương mại điện tử trực tiếp ✔ Cửa hàng tùy chỉnh WeChat Work'
+      ],
+      process: [],
+      blocks: [
+        { title: 'Mô-đun', desc: 'Triển khai nhanh, kết hợp linh hoạt' },
+        { title: 'Tiến bộ', desc: 'Xác thực MVP, tích hợp dần dần' },
+        { title: 'Tùy chỉnh', desc: 'Đáp ứng nhu cầu kinh doanh cụ thể' }
       ]
     },
     'AI 技术与业务运营支持': {
@@ -523,6 +631,21 @@ const showServiceDetails = (service: any) => {
         { title: 'Model Optimization', desc: 'Enhance AI algorithm performance' },
         { title: 'Effectiveness Review', desc: 'Monthly assessment' }
       ]
+    },
+    'Hỗ trợ kỹ thuật & vận hành AI': {
+      title: 'Hỗ trợ kỹ thuật & vận hành AI',
+      content: 'Chúng tôi giải quyết vấn đề thiếu hỗ trợ liên tục và khó khăn trong việc duy trì hiệu quả sau khi nhà cung cấp kỹ thuật giao hàng bằng cách cung cấp dịch vụ hỗ trợ vận hành kỹ thuật. Chúng tôi cung cấp các gói dịch vụ hàng quý bao gồm giám sát dữ liệu, tối ưu hóa mô hình và phản hồi bất thường. Chúng tôi liên kết với các chỉ số kinh doanh, tiến hành các cuộc họp đánh giá hiệu quả hàng tháng và tạo điều kiện chuyển giao kiến thức để giúp doanh nghiệp xây dựng khả năng đội ngũ của riêng họ.',
+      features: [
+        'Gói dịch vụ hàng quý: Giám sát dữ liệu + Tối ưu hóa mô hình + Phản hồi bất thường',
+        'Liên kết chỉ số kinh doanh: Cuộc họp đánh giá hiệu quả hàng tháng',
+        'Chuyển giao kiến thức: Xây dựng khả năng đội ngũ doanh nghiệp'
+      ],
+      process: [],
+      blocks: [
+        { title: 'Giám sát dữ liệu', desc: 'Theo dõi liên tục các chỉ số chính' },
+        { title: 'Tối ưu hóa mô hình', desc: 'Nâng cao hiệu suất thuật toán AI' },
+        { title: 'Đánh giá hiệu quả', desc: 'Đánh giá hàng tháng' }
+      ]
     }
   };
   currentService.value = serviceDetails[service.title as keyof typeof serviceDetails];
@@ -537,7 +660,10 @@ const getServiceImage = (title: string) => {
     'AI 技术与业务运营支持': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
     'AI Consulting': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
     'Custom AI Development': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    'AI Tech & Operations Support': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
+    'AI Tech & Operations Support': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
+    'Tư vấn AI': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    'Phát triển AI tùy chỉnh': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
+    'Hỗ trợ kỹ thuật & vận hành AI': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
   };
   return imageMap[title as keyof typeof imageMap];
 };
@@ -550,7 +676,10 @@ const getCaseImage = (title: string) => {
     '制造业 AI 解决方案': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
     'E-commerce AI Solution': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
     'Healthcare AI System': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    'Manufacturing AI Solution': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
+    'Manufacturing AI Solution': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
+    'Giải pháp AI thương mại điện tử': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
+    'Hệ thống AI y tế': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
+    'Giải pháp AI sản xuất': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
   };
   return imageMap[title as keyof typeof imageMap];
 };
