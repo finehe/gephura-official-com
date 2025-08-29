@@ -85,9 +85,20 @@
       </div>
     </nav>
     <!-- Hero区域 -->
-    <div class="relative h-[600px] md:h-[600px] h-[500px] pt-20 w-full" style="top: 50px;">
-      <img :src="heroImage" alt="AI Innovation" class="w-full h-full object-cover">
-      <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center">
+    <div class="relative h-[600px] md:h-[600px] h-[500px] pt-20 w-full overflow-hidden" style="top: 50px;">
+      <!-- 背景视频 -->
+      <video
+        :src="heroVideo"
+        class="hero-video absolute inset-0 w-full h-full object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+        @error="handleVideoError"
+      ></video>
+
+      <!-- 文字内容覆盖层 -->
+      <!-- <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center">
         <div class="w-full px-6">
           <h1 class="md:text-5xl text-3xl font-bold text-white mb-6">{{ i18n[currentLang].hero.title }}</h1>
           <p class="md:text-xl text-lg text-white/90 mb-8 max-w-2xl">{{ i18n[currentLang].hero.subtitle }}</p>
@@ -97,7 +108,7 @@
             <i class="fas fa-arrow-right transform group-hover:translate-x-2 transition-transform"></i>
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- 关于我们 -->
     <section id="about" class="py-20 w-full">
@@ -258,6 +269,11 @@ const currentService = ref({
 const showBackTop = ref(false);
 type Language = 'en' | 'cn' | 'vi';
 const currentLang = ref<Language>('en');
+
+// 视频播放控制
+const handleVideoError = () => {
+  console.warn('视频加载失败');
+};
 const i18n = {
   cn: {
     nav: {
@@ -428,8 +444,9 @@ const i18n = {
     }
   }
 };
-const heroImage = 'https://public.readdy.ai/ai/img_res/1755778b77a0e79d2ec06e0b82414bf2.jpg';
-const aboutImage = 'https://public.readdy.ai/ai/img_res/54c76814d2ff0793cc44840583d0d590.jpg';
+// 英雄区域视频
+const heroVideo = 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/offical-main.mp4';
+const aboutImage = 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/About-us.svg';
 
 type NavItemId = 'about' | 'services' | 'cases' | 'contact';
 
@@ -1217,16 +1234,16 @@ const showServiceDetails = (service: any) => {
 // 获取服务图片
 const getServiceImage = (title: string) => {
   const imageMap = {
-    'AI 导购一体机': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    'AI Shopping Assistant All-in-One Kiosk': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    'Gephura 数字员工平台': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    '全景定制服务': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
-    'AI Shopping Guide All-in-One Machine': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    'Gephura Digital Employee Platform': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    'Comprehensive Customization Services': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
-    'Máy bán hàng thông minh AI tích hợp tất cả': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    'Nền tảng nhân viên số Gephura': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    'Dịch vụ tùy chỉnh toàn diện': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
+    'AI 导购一体机': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/All-in-One-Machine.svg',
+    'AI Shopping Assistant All-in-One Kiosk': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/All-in-One-Machine.svg',
+    'Gephura 数字员工平台': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Digital-Employee-Platform.svg',
+    '全景定制服务': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Comprehensive-Customization-Services.svg',
+    'AI Shopping Guide All-in-One Machine': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/All-in-One-Machine.svg',
+    'Gephura Digital Employee Platform': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Digital-Employee-Platform.svg',
+    'Comprehensive Customization Services': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Comprehensive-Customization-Services.svg',
+    'Máy bán hàng thông minh AI tích hợp tất cả': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/All-in-One-Machine.svg',
+    'Nền tảng nhân viên số Gephura': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Digital-Employee-Platform.svg',
+    'Dịch vụ tùy chỉnh toàn diện': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Comprehensive-Customization-Services.svg'
   };
   return imageMap[title as keyof typeof imageMap];
 };
@@ -1234,15 +1251,15 @@ const getServiceImage = (title: string) => {
 // 获取案例图片
 const getCaseImage = (title: string) => {
   const imageMap = {
-    '全球展会': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
-    '品牌门店': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    '服务大厅': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
-    'Global Exhibitions': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
-    'Brand Stores': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    'Service Halls': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
-    'Hội chợ toàn cầu': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
-    'Cửa hàng thương hiệu': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    'Sảnh dịch vụ': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
+    '全球展会': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Global-Exhibitions.svg',
+    '品牌门店': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Brand-Stores.svg',
+    '服务大厅': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Service-Halls.svg',
+    'Global Exhibitions': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Global-Exhibitions.svg',
+    'Brand Stores': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Brand-Stores.svg',
+    'Service Halls': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Service-Halls.svg',
+    'Hội chợ toàn cầu': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Global-Exhibitions.svg',
+    'Cửa hàng thương hiệu': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Brand-Stores.svg',
+    'Sảnh dịch vụ': 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/Service-Halls.svg'
   };
   return imageMap[title as keyof typeof imageMap];
 };
@@ -1310,5 +1327,24 @@ window.addEventListener('scroll', () => {
   .smooth-scroll {
     -webkit-overflow-scrolling: touch;
   }
+}
+
+/* 英雄区域视频样式 */
+.hero-video {
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* 视频加载动画 */
+@keyframes videoFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-video {
+  animation: videoFadeIn 0.5s ease-in-out;
 }
 </style>
