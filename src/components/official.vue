@@ -131,45 +131,30 @@
                 {{ i18n[currentLang].services.more }}
               </button>
               <!-- 服务详情弹窗 -->
-              <div v-if="showServiceModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-                <div class="bg-white rounded-xl w-[800px] max-h-[90vh] overflow-y-auto">
+              <div v-if="showServiceModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
                   <div class="p-8">
-                    <div class="flex justify-between items-center mb-6">
-                      <h3 class="text-2xl font-bold">{{ currentService.title }}</h3>
-                      <button @click="showServiceModal = false" class="text-gray-500 hover:text-gray-700">
+                    <div class="flex justify-between items-center mb-8">
+                      <h3 class="text-2xl md:text-3xl font-bold text-gray-900">{{ currentService.title }}</h3>
+                      <button @click="showServiceModal = false" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full">
                         <i class="fas fa-times text-xl"></i>
                       </button>
                     </div>
-                    <p class="text-gray-600 leading-relaxed mb-8">{{ currentService.content }}</p>
-                    <div class="space-y-2 mb-8">
-                      <div v-for="(feature, index) in currentService.features" :key="index"
-                        class="flex items-start gap-3">
-                        <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                        <span class="text-gray-700">{{ feature }}</span>
-                      </div>
+
+                    <!-- 服务介绍 -->
+                    <div class="mb-8">
+                      <div v-html="currentService.content" class="text-gray-700 leading-relaxed space-y-6"></div>
                     </div>
-                    <!-- 流程/模块展示 -->
-                    <div v-if="currentService.process.length > 0" class="mb-8">
-                      <div class="flex items-center justify-between relative">
-                        <div v-for="(step, index) in currentService.process" :key="index"
-                          class="flex-1 text-center relative z-10">
-                          <div
-                            class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-3">
-                            <i class="fas" :class="getProcessIcon(index)"></i>
-                          </div>
-                          <h4 class="font-semibold mb-1">{{ step.title }}</h4>
-                          <p class="text-sm text-gray-500">{{ step.desc }}</p>
-                        </div>
-                        <div class="absolute top-6 left-0 w-full h-0.5 bg-blue-100"></div>
-                      </div>
-                    </div>
-                    <!-- 色块展示 -->
-                    <div v-if="currentService.blocks.length > 0" class="grid grid-cols-3 gap-6">
-                      <div v-for="(block, index) in currentService.blocks" :key="index"
-                        class="bg-gradient-to-br p-6 rounded-lg" :class="getBlockColor(index)">
-                        <h4 class="font-semibold text-white mb-2">{{ block.title }}</h4>
-                        <p class="text-white/90 text-sm">{{ block.desc }}</p>
-                      </div>
+
+
+
+                    <!-- 底部操作区 -->
+                    <div class="mt-8 pt-6 border-t border-gray-200 flex justify-end gap-4">
+                      <button @click="showServiceModal = false; scrollToSection('contact')"
+                        class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        立即咨询
+                        <i class="fas fa-arrow-right ml-2"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -268,10 +253,7 @@ const currentNav = ref('home');
 const showServiceModal = ref(false);
 const currentService = ref({
   title: '',
-  content: '',
-  features: [] as string[],
-  process: [] as { title: string; desc: string }[],
-  blocks: [] as { title: string; desc: string }[]
+  content: ''
 });
 const showBackTop = ref(false);
 type Language = 'en' | 'cn' | 'vi';
@@ -495,213 +477,737 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-const getProcessIcon = (index: number) => {
-  const icons = ['fa-chart-line', 'fa-filter', 'fa-rocket'];
-  return icons[index];
-};
 
-const getBlockColor = (index: number) => {
-  const colors = [
-    'from-blue-500 to-blue-700',
-    'from-purple-500 to-purple-700',
-    'from-green-500 to-green-700'
-  ];
-  return colors[index];
-};
+
+
 
 const showServiceDetails = (service: any) => {
   const serviceDetails = {
     'AI 导购一体机': {
       title: 'AI 导购一体机',
-      content: 'AI导购数字人一体机，用靓丽灵动的数字人形象吸引客户驻足，用多语种自然对话的数字人讲解，结合产品多模态展示打动客户，用定制化的产品知识库和话术实现客户双向深度沟通，并通过主动数据分析掌握客户偏好与购买意向。\n\n' +
-        '1. 线下AI多模态体验<br>' +
-        '将传统平面宣传与人工讲解升级为AI多模态智能交互，整合产品图文展示与数字人讲解，实现多语种自然对话的双向客户沟通。\n\n' +
-        '2. 闭环式AI线下营销流程\n' +
-        '从“吸引-互动-留资-分析”全流程由AI驱动完成。系统自动识别客户兴趣点、行为路径引导用户留资，数据分析形成营销数据闭环，助力精准跟进与持续优化。\n\n' +
-        '3. 软硬一体，全场景交付\n' +
-        '软硬件深度集成设计，一台设备即完成客户接待、内容展示、语音互动、客户留资等全流程，真正实现“真实世界的AI即插即用”。适配展会、展厅、门店等多种营销场景。\n\n' +
-        '4. 极简训练，快速上岗\n' +
-        '后台系统以"低门槛、高智能"为设计理念，内置AI辅助训练模块。企业只需上传产品资料，系统即可自动分析学习，生成产品问答库与数字人介绍内容，无额外使用成本。',
-      features: [
-      ],
-      process: [
-        { title: '业务流程评估', desc: '评估企业数字化基础' },
-        { title: '场景筛选', desc: '确定AI应用潜力领域' },
-        { title: '快速验证', desc: '12周内验证方案可行性' }
-      ],
-      blocks: []
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'AI导购数字人一体机，用<strong class="text-blue-600">靓丽灵动的数字人形象</strong>吸引客户驻足，用<strong class="text-blue-600">多语种自然对话</strong>的数字人讲解，结合产品多模态展示打动客户，用定制化的产品知识库和话术实现客户双向深度沟通，并通过主动数据分析掌握客户偏好与购买意向。' +
+        '</p>' +
+
+        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<h4 class="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">' +
+            '<i class="fas fa-lightbulb text-blue-600"></i>' +
+            '核心优势' +
+          '</h4>' +
+          '<div class="space-y-4">' +
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">线下AI多模态体验</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">将传统平面宣传与人工讲解升级为AI多模态智能交互，整合产品图文展示与数字人讲解，实现多语种自然对话的双向客户沟通。</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">闭环式AI线下营销流程</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">从<strong>"吸引-互动-留资-分析"</strong>全流程由AI驱动完成。系统自动识别客户兴趣点、行为路径引导用户留资，数据分析形成营销数据闭环，助力精准跟进与持续优化。</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">软硬一体，全场景交付</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">软硬件深度集成设计，一台设备即完成客户接待、内容展示、语音互动、客户留资等全流程，真正实现<strong>"真实世界的AI即插即用"</strong>。适配展会、展厅、门店等多种营销场景。</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">极简训练，快速上岗</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">后台系统以<strong>"低门槛、高智能"</strong>为设计理念，内置AI辅助训练模块。企业只需上传产品资料，系统即可自动分析学习，生成产品问答库与数字人介绍内容，无额外使用成本。</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'AI Shopping Guide All-in-One Machine': {
       title: 'AI Shopping Guide All-in-One Machine',
-      content: 'AI shopping guide digital human all-in-one machine uses beautiful and dynamic digital human images to attract customers, uses multi-language natural dialogue digital human explanations to impress customers, combines customized product knowledge base and scripts to achieve two-way in-depth customer communication, and masters customer preferences and purchase intentions through active data analysis.\n\n' +
-        '1. Offline AI multimodal experience<br>' +
-        'Upgrade traditional flat promotions and manual explanations to AI multimodal intelligent interaction, integrating product graphic display with digital human explanation, achieving multi-language natural dialogue for two-way customer communication.\n\n' +
-        '2. Closed-loop AI offline marketing process<br>' +
-        'The entire process from "attract-interact-collect-analyze" is AI-driven. The system automatically identifies customer interest points, guides user behavior paths, enables users to leave information, and forms a data closed loop for marketing, assisting in precise follow-up and continuous optimization.\n\n' +
-        '3. Software-hardware integration, all-scenario delivery<br>' +
-        'Deep integration design of software and hardware. One device completes the entire process of customer reception, content display, voice interaction, and customer data collection, truly achieving "plug-and-play AI in the real world". Adaptable to exhibition halls, showrooms, stores, and other marketing scenarios.\n\n' +
-        '4. Simple training, quick onboarding<br>' +
-        'The backend system takes "low-threshold, high-intelligence" as the design concept, with built-in AI-assisted training modules. Enterprises only need to upload product materials, and the system can automatically analyze and learn, generate product Q&A databases and digital human introduction content, with no additional usage costs.',
-      features: [
-      ],
-      process: [
-        { title: 'Business Process Assessment', desc: 'Assess enterprise digital foundation' },
-        { title: 'Scenario Screening', desc: 'Determine AI application potential areas' },
-        { title: 'Rapid Validation', desc: 'Validate solution feasibility within 12 weeks' }
-      ],
-      blocks: []
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'AI shopping guide digital human all-in-one machine uses <strong class="text-blue-600">beautiful and dynamic digital human images</strong> to attract customers, uses <strong class="text-blue-600">multi-language natural dialogue</strong> digital human explanations to impress customers, combines customized product knowledge base and scripts to achieve two-way in-depth customer communication, and masters customer preferences and purchase intentions through active data analysis.' +
+        '</p>' +
+
+        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<h4 class="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">' +
+            '<i class="fas fa-lightbulb text-blue-600"></i>' +
+            'Key Advantages' +
+          '</h4>' +
+          '<div class="space-y-4">' +
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Offline AI Multimodal Experience</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">Upgrade traditional flat promotions and manual explanations to AI multimodal intelligent interaction, integrating product graphic display with digital human explanation, achieving multi-language natural dialogue for two-way customer communication.</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Closed-loop AI Offline Marketing Process</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">The entire process from <strong>"attract-interact-collect-analyze"</strong> is AI-driven. The system automatically identifies customer interest points, guides user behavior paths, enables users to leave information, and forms a data closed loop for marketing, assisting in precise follow-up and continuous optimization.</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Software-Hardware Integration, All-Scenario Delivery</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">Deep integration design of software and hardware. One device completes the entire process of customer reception, content display, voice interaction, and customer data collection, truly achieving <strong>"plug-and-play AI in the real world"</strong>. Adaptable to exhibition halls, showrooms, stores, and other marketing scenarios.</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Simple Training, Quick Onboarding</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">The backend system takes <strong>"low-threshold, high-intelligence"</strong> as the design concept, with built-in AI-assisted training modules. Enterprises only need to upload product materials, and the system can automatically analyze and learn, generate product Q&A databases and digital human introduction content, with no additional usage costs.</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'Máy bán hàng thông minh AI tích hợp tất cả': {
       title: 'Máy bán hàng thông minh AI tích hợp tất cả',
-      content: 'Máy bán hàng hướng dẫn AI nhân vật số tích hợp tất cả sử dụng hình ảnh nhân vật số đẹp đẽ và năng động để thu hút khách hàng dừng lại, sử dụng giải thích nhân vật số đối thoại tự nhiên đa ngôn ngữ để gây ấn tượng với khách hàng, kết hợp cơ sở kiến thức sản phẩm tùy chỉnh và kịch bản để đạt được giao tiếp sâu hai chiều với khách hàng, và nắm vững sở thích và ý định mua hàng của khách hàng thông qua phân tích dữ liệu chủ động.\n\n' +
-        '1. Trải nghiệm đa phương thức AI ngoại tuyến<br>' +
-        'Nâng cấp quảng cáo phẳng truyền thống và giải thích thủ công thành tương tác thông minh đa phương thức AI, tích hợp hiển thị đồ họa sản phẩm với giải thích nhân vật số, đạt được giao tiếp hai chiều tự nhiên đa ngôn ngữ với khách hàng.\n\n' +
-        '2. Quy trình tiếp thị ngoại tuyến AI khép kín<br>' +
-        'Toàn bộ quy trình từ "thu hút-tương tác-thu thập-phân tích" được điều khiển bởi AI. Hệ thống tự động xác định điểm quan tâm của khách hàng, hướng dẫn đường dẫn hành vi người dùng, cho phép người dùng để lại thông tin, và hình thành vòng khép kín dữ liệu tiếp thị, hỗ trợ theo dõi chính xác và tối ưu hóa liên tục.\n\n' +
-        '3. Tích hợp phần mềm-phần cứng, giao hàng tất cả kịch bản<br>' +
-        'Thiết kế tích hợp sâu phần mềm và phần cứng. Một thiết bị hoàn thành toàn bộ quy trình tiếp đón khách hàng, hiển thị nội dung, tương tác giọng nói và thu thập dữ liệu khách hàng, thực sự đạt được "AI cắm là chạy trong thế giới thực". Phù hợp với hội chợ, phòng trưng bày, cửa hàng và các kịch bản tiếp thị khác.\n\n' +
-        '4. Đào tạo đơn giản, onboard nhanh chóng<br>' +
-        'Hệ thống backend lấy "ngưỡng thấp, trí thông minh cao" làm khái niệm thiết kế, với các mô-đun hỗ trợ đào tạo AI tích hợp. Doanh nghiệp chỉ cần tải lên tài liệu sản phẩm, hệ thống có thể tự động phân tích và học, tạo cơ sở dữ liệu Q&A sản phẩm và nội dung giới thiệu nhân vật số, không có chi phí sử dụng bổ sung.',
-      features: [
-      ],
-      process: [
-        { title: 'Đánh giá quy trình kinh doanh', desc: 'Đánh giá nền tảng số của doanh nghiệp' },
-        { title: 'Sàng lọc kịch bản', desc: 'Xác định lĩnh vực tiềm năng ứng dụng AI' },
-        { title: 'Xác thực nhanh', desc: 'Xác thực tính khả thi giải pháp trong 12 tuần' }
-      ],
-      blocks: []
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'Máy bán hàng hướng dẫn AI nhân vật số tích hợp tất cả sử dụng <strong class="text-blue-600">hình ảnh nhân vật số đẹp đẽ và năng động</strong> để thu hút khách hàng dừng lại, sử dụng <strong class="text-blue-600">giải thích nhân vật số đối thoại tự nhiên đa ngôn ngữ</strong> để gây ấn tượng với khách hàng, kết hợp cơ sở kiến thức sản phẩm tùy chỉnh và kịch bản để đạt được giao tiếp sâu hai chiều với khách hàng, và nắm vững sở thích và ý định mua hàng của khách hàng thông qua phân tích dữ liệu chủ động.' +
+        '</p>' +
+
+        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<h4 class="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">' +
+            '<i class="fas fa-lightbulb text-blue-600"></i>' +
+            'Ưu thế cốt lõi' +
+          '</h4>' +
+          '<div class="space-y-4">' +
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Trải nghiệm đa phương thức AI ngoại tuyến</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">Nâng cấp quảng cáo phẳng truyền thống và giải thích thủ công thành tương tác thông minh đa phương thức AI, tích hợp hiển thị đồ họa sản phẩm với giải thích nhân vật số, đạt được giao tiếp hai chiều tự nhiên đa ngôn ngữ với khách hàng.</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Quy trình tiếp thị ngoại tuyến AI khép kín</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">Toàn bộ quy trình từ <strong>"thu hút-tương tác-thu thập-phân tích"</strong> được điều khiển bởi AI. Hệ thống tự động xác định điểm quan tâm của khách hàng, hướng dẫn đường dẫn hành vi người dùng, cho phép người dùng để lại thông tin, và hình thành vòng khép kín dữ liệu tiếp thị, hỗ trợ theo dõi chính xác và tối ưu hóa liên tục.</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Tích hợp phần mềm-phần cứng, giao hàng tất cả kịch bản</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">Thiết kế tích hợp sâu phần mềm và phần cứng. Một thiết bị hoàn thành toàn bộ quy trình tiếp đón khách hàng, hiển thị nội dung, tương tác giọng nói và thu thập dữ liệu khách hàng, thực sự đạt được <strong>"AI cắm là chạy trong thế giới thực"</strong>. Phù hợp với hội chợ, phòng trưng bày, cửa hàng và các kịch bản tiếp thị khác.</p>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="flex items-start gap-3">' +
+              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
+              '<div>' +
+                '<h5 class="font-semibold text-gray-900">Đào tạo đơn giản, onboard nhanh chóng</h5>' +
+                '<p class="text-gray-600 text-sm mt-1">Hệ thống backend lấy <strong>"ngưỡng thấp, trí thông minh cao"</strong> làm khái niệm thiết kế, với các mô-đun hỗ trợ đào tạo AI tích hợp. Doanh nghiệp chỉ cần tải lên tài liệu sản phẩm, hệ thống có thể tự động phân tích và học, tạo cơ sở dữ liệu Q&A sản phẩm và nội dung giới thiệu nhân vật số, không có chi phí sử dụng bổ sung.</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'Gephura 数字员工平台': {
       title: 'Gephura 数字员工平台',
-      content: '只需 三步，您的AI数字员工即可快速上岗：\n' +
-      '- 便捷创建产品库\n' +
-      '  - 拖拽上传产品资料，AI自动完成信息解析与问答库生成\n' +
-      '  - 支持自动多语种翻译与内容优化\n' +
-      '  - 多模态展示产品（图文、视频、3D模型等）\n' +
-      '- 聘用并培训数字员工\n' +
-      '  - 平台提供多样化数字员工形象（不同风格、性格、表现力）\n' +
-      '  - 企业可选择符合品牌调性的数字人，30分钟即可完成培训上岗\n' +
-      '  - 具备循环学习能力，越用越智能\n' +
-      '- 个性化场景设定，开启营销活动\n' +
-      '  - 支持展会、门店、展厅等多种应用场景\n' +
-      '  - 自定义产品展示与数字人对话行为风格\n' +
-      '  - 打造高度贴合场景的互动体验\n' +
-      '- 活动复盘，销售转化\n' +
-      '  - 详细分析每位客户的互动行为与意向\n' +
-      '  - 数据直连CRM，精准线索转化\n' +
-      '  - 助力企业实现高效销售增长' ,
-      features: [
-      ],
-      process: [],
-      blocks: [
-        { title: '模块化', desc: '快速搭建，灵活组合' },
-        { title: '渐进式', desc: 'MVP验证，逐步集成' },
-        { title: '定制化', desc: '满足特定业务需求' }
-      ]
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          '只需<strong class="text-blue-600">三步</strong>，您的AI数字员工即可<strong class="text-blue-600">快速上岗</strong>：' +
+        '</p>' +
+
+        '<div class="space-y-6">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-green-800 mb-3">便捷创建产品库</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">拖拽上传产品资料，AI自动完成<strong>信息解析与问答库生成</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">支持<strong>自动多语种翻译</strong>与内容优化</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">多模态展示产品（图文、视频、<strong>3D模型</strong>等）</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-blue-800 mb-3">聘用并培训数字员工</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">平台提供<strong>多样化数字员工形象</strong>（不同风格、性格、表现力）</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">企业可选择符合品牌调性的数字人，<strong>30分钟</strong>即可完成培训上岗</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">具备<strong>循环学习能力</strong>，越用越智能</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-purple-800 mb-3">个性化场景设定，开启营销活动</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">支持展会、门店、展厅等<strong>多种应用场景</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">自定义产品展示与数字人对话行为风格</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">打造<strong>高度贴合场景</strong>的互动体验</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-orange-800 mb-3">活动复盘，销售转化</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">详细分析每位客户的<strong>互动行为与意向</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">数据直连CRM，<strong>精准线索转化</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">助力企业实现<strong>高效销售增长</strong></span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'Gephura Digital Employee Platform': {
       title: 'Gephura Digital Employee Platform',
-      content: 'Just three steps for your AI digital employee to go online quickly:\n' +
-      '- Convenient product library creation\n' +
-      '  - Drag and drop to upload product materials, AI automatically completes information parsing and Q&A database generation\n' +
-      '  - Support automatic multi-language translation and content optimization\n' +
-      '  - Multi-modal product display (graphics, videos, 3D models, etc.)\n' +
-      '- Hire and train digital employees\n' +
-      '  - The platform provides diverse digital employee images (different styles, personalities, expressiveness)\n' +
-      '  - Enterprises can choose digital humans that match brand tonality, 30 minutes to complete training and onboarding\n' +
-      '  - Possess cyclic learning ability, gets smarter the more it\'s used\n' +
-      '- Personalized scenario settings, launch marketing activities\n' +
-      '  - Supports exhibition halls, stores, showrooms and other application scenarios\n' +
-      '  - Customize product display and digital human dialogue behavior style\n' +
-      '  - Create highly fitting interactive experiences for scenarios\n' +
-      '- Activity review, sales conversion\n' +
-      '  - Detailed analysis of each customer\'s interactive behavior and intentions\n' +
-      '  - Data directly connected to CRM, precise lead conversion\n' +
-      '  - Assist enterprises in achieving efficient sales growth',
-      features: [
-      ],
-      process: [],
-      blocks: [
-        { title: 'Modular', desc: 'Rapid assembly, flexible combination' },
-        { title: 'Progressive', desc: 'MVP validation, gradual integration' },
-        { title: 'Customized', desc: 'Satisfy specific business needs' }
-      ]
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'Just <strong class="text-blue-600">three steps</strong> for your AI digital employee to go <strong class="text-blue-600">online quickly</strong>:' +
+        '</p>' +
+
+        '<div class="space-y-6">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-green-800 mb-3">Convenient Product Library Creation</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Drag and drop to upload product materials, AI automatically completes <strong>information parsing and Q&A database generation</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Support <strong>automatic multi-language translation</strong> and content optimization</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Multi-modal product display (graphics, videos, <strong>3D models</strong>, etc.)</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-blue-800 mb-3">Hire and Train Digital Employees</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">The platform provides <strong>diverse digital employee images</strong> (different styles, personalities, expressiveness)</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Enterprises can choose digital humans that match brand tonality, <strong>30 minutes</strong> to complete training and onboarding</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Possess <strong>cyclic learning ability</strong>, gets smarter the more it\'s used</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-purple-800 mb-3">Personalized Scenario Settings, Launch Marketing Activities</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Supports exhibition halls, stores, showrooms and <strong>various application scenarios</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Customize product display and digital human dialogue behavior style</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Create <strong>highly fitting interactive experiences</strong> for scenarios</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-orange-800 mb-3">Activity Review, Sales Conversion</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Detailed analysis of each customer\'s <strong>interactive behavior and intentions</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Data directly connected to CRM, <strong>precise lead conversion</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Assist enterprises in achieving <strong>efficient sales growth</strong></span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'Nền tảng nhân viên số Gephura': {
       title: 'Nền tảng nhân viên số Gephura',
-      content: 'Chỉ cần ba bước, nhân viên số AI của bạn có thể nhanh chóng đi vào hoạt động:\n' +
-      '- Tạo thư viện sản phẩm tiện lợi\n' +
-      '  - Kéo thả tải lên tài liệu sản phẩm, AI tự động hoàn thành phân tích thông tin và tạo cơ sở dữ liệu Q&A\n' +
-      '  - Hỗ trợ dịch tự động đa ngôn ngữ và tối ưu hóa nội dung\n' +
-      '  - Hiển thị sản phẩm đa phương thức (đồ họa, video, mô hình 3D, v.v.)\n' +
-      '- Tuyển dụng và đào tạo nhân viên số\n' +
-      '  - Nền tảng cung cấp hình ảnh nhân viên số đa dạng (kiểu dáng, tính cách, biểu đạt khác nhau)\n' +
-      '  - Doanh nghiệp có thể chọn nhân vật số phù hợp với tông màu thương hiệu, 30 phút hoàn thành đào tạo và onboard\n' +
-      '  - Sở hữu khả năng học tập tuần hoàn, càng dùng càng thông minh\n' +
-      '- Thiết lập kịch bản cá nhân hóa, khởi động hoạt động tiếp thị\n' +
-      '  - Hỗ trợ hội chợ, cửa hàng, phòng trưng bày và các kịch bản ứng dụng khác\n' +
-      '  - Tùy chỉnh hiển thị sản phẩm và phong cách hành vi đối thoại nhân vật số\n' +
-      '  - Tạo trải nghiệm tương tác phù hợp cao với kịch bản\n' +
-      '- Tổng kết hoạt động, chuyển đổi bán hàng\n' +
-      '  - Phân tích chi tiết hành vi tương tác và ý định của từng khách hàng\n' +
-      '  - Dữ liệu kết nối trực tiếp với CRM, chuyển đổi lead chính xác\n' +
-      '  - Hỗ trợ doanh nghiệp đạt được tăng trưởng bán hàng hiệu quả',
-      features: [
-      ],
-      process: [],
-      blocks: [
-        { title: 'Mô-đun', desc: 'Xây dựng nhanh, kết hợp linh hoạt' },
-        { title: 'Tiến bộ', desc: 'Xác thực MVP, tích hợp dần dần' },
-        { title: 'Tùy chỉnh', desc: 'Đáp ứng nhu cầu kinh doanh cụ thể' }
-      ]
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'Chỉ cần <strong class="text-blue-600">ba bước</strong>, nhân viên số AI của bạn có thể <strong class="text-blue-600">nhanh chóng đi vào hoạt động</strong>:' +
+        '</p>' +
+
+        '<div class="space-y-6">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-green-800 mb-3">Tạo thư viện sản phẩm tiện lợi</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Kéo thả tải lên tài liệu sản phẩm, AI tự động hoàn thành <strong>phân tích thông tin và tạo cơ sở dữ liệu Q&A</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Hỗ trợ <strong>dịch tự động đa ngôn ngữ</strong> và tối ưu hóa nội dung</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Hiển thị sản phẩm đa phương thức (đồ họa, video, <strong>mô hình 3D</strong>, v.v.)</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-blue-800 mb-3">Tuyển dụng và đào tạo nhân viên số</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Nền tảng cung cấp <strong>hình ảnh nhân viên số đa dạng</strong> (kiểu dáng, tính cách, biểu đạt khác nhau)</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Doanh nghiệp có thể chọn nhân vật số phù hợp với tông màu thương hiệu, <strong>30 phút</strong> hoàn thành đào tạo và onboard</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Sở hữu <strong>khả năng học tập tuần hoàn</strong>, càng dùng càng thông minh</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-purple-800 mb-3">Thiết lập kịch bản cá nhân hóa, khởi động hoạt động tiếp thị</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Hỗ trợ hội chợ, cửa hàng, phòng trưng bày và <strong>các kịch bản ứng dụng khác</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Tùy chỉnh hiển thị sản phẩm và phong cách hành vi đối thoại nhân vật số</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Tạo <strong>trải nghiệm tương tác phù hợp cao</strong> với kịch bản</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-xl font-bold text-orange-800 mb-3">Tổng kết hoạt động, chuyển đổi bán hàng</h4>' +
+                '<div class="space-y-2">' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Phân tích chi tiết <strong>hành vi tương tác và ý định</strong> của từng khách hàng</span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Dữ liệu kết nối trực tiếp với CRM, <strong>chuyển đổi lead chính xác</strong></span>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-2">' +
+                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
+                    '<span class="text-gray-700">Hỗ trợ doanh nghiệp đạt được <strong>tăng trưởng bán hàng hiệu quả</strong></span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     '全景定制服务': {
       title: '全景定制服务',
-      content: '数字化展示不同的产品，不同的企业，需要更加个性化的定制方案：\n' +
-      '- 数字员工定制：结合企业品牌调性，打造专属品牌数字人形象与互动风格\n' +
-      '- 宣传内容与训练代运营：专业团队一对一服务，代为生成、训练与优化内容\n' +
-      '- 展示设备定制：提供大尺寸，半透明，裸眼3D等多样化硬件形态，匹配不同线下营销场景\n' +
-      '- 全场景AI营销设计：根据展会、门店、展厅等场景，完整设计AI线下营销方案，无死角全面AI升级',
-      features: [
-      ],
-      process: [],
-      blocks: [
-        { title: '数据监测', desc: '持续追踪关键指标' },
-        { title: '模型优化', desc: '提升AI算法性能' },
-        { title: '效果复盘', desc: '每月评估' }
-      ]
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          '数字化展示不同的产品，不同的企业，需要<strong class="text-blue-600">更加个性化的定制方案</strong>：' +
+        '</p>' +
+
+        '<div class="grid md:grid-cols-2 gap-6">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-user-tie"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-blue-800 mb-2">数字员工定制</h4>' +
+                '<p class="text-gray-700 text-sm">结合企业品牌调性，打造<strong>专属品牌数字人形象</strong>与互动风格</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-bullhorn"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-green-800 mb-2">宣传内容与训练代运营</h4>' +
+                '<p class="text-gray-700 text-sm">专业团队<strong>一对一服务</strong>，代为生成、训练与优化内容</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-tv"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-purple-800 mb-2">展示设备定制</h4>' +
+                '<p class="text-gray-700 text-sm">提供<strong>大尺寸、半透明、裸眼3D</strong>等多样化硬件形态，匹配不同线下营销场景</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-draw-polygon"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-orange-800 mb-2">全场景AI营销设计</h4>' +
+                '<p class="text-gray-700 text-sm">根据展会、门店、展厅等场景，完整设计AI线下营销方案，<strong>无死角全面AI升级</strong></p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 p-6 rounded-xl border border-gray-200">' +
+          '<h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">' +
+            '<i class="fas fa-cogs text-gray-600"></i>' +
+            '定制服务流程' +
+          '</h4>' +
+          '<div class="grid md:grid-cols-4 gap-4">' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
+              '<p class="text-sm font-medium text-gray-700">需求分析</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
+              '<p class="text-sm font-medium text-gray-700">方案设计</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
+              '<p class="text-sm font-medium text-gray-700">定制开发</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
+              '<p class="text-sm font-medium text-gray-700">部署上线</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'Comprehensive Customization Services': {
       title: 'Comprehensive Customization Services',
-      content: 'Different products and different enterprises need more personalized customized solutions:\n' +
-      '- Digital employee customization: Integrate with enterprise brand tonality to create exclusive brand digital human images and interactive styles\n' +
-      '- Content and training outsourcing: Professional team one-on-one service, help generate, train and optimize content\n' +
-      '- Display device customization: Provide large-size, semi-transparent, naked-eye 3D and other diversified hardware forms to match different offline marketing scenarios\n' +
-      '- All-scenario AI marketing design: Design complete AI offline marketing solutions based on exhibitions, stores, showrooms and other scenarios, comprehensive AI upgrades without dead ends',
-      features: [
-      ],
-      process: [],
-      blocks: [
-        { title: 'Data Monitoring', desc: 'Continuous tracking of key indicators' },
-        { title: 'Model Optimization', desc: 'Improve AI algorithm performance' },
-        { title: 'Effectiveness Review', desc: 'Monthly review' }
-      ]
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'Different products and different enterprises need <strong class="text-blue-600">more personalized customized solutions</strong>:' +
+        '</p>' +
+
+        '<div class="grid md:grid-cols-2 gap-6">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-user-tie"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-blue-800 mb-2">Digital Employee Customization</h4>' +
+                '<p class="text-gray-700 text-sm">Integrate with enterprise brand tonality to create <strong>exclusive brand digital human images</strong> and interactive styles</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-bullhorn"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-green-800 mb-2">Content & Training Outsourcing</h4>' +
+                '<p class="text-gray-700 text-sm">Professional team <strong>one-on-one service</strong>, help generate, train and optimize content</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-tv"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-purple-800 mb-2">Display Device Customization</h4>' +
+                '<p class="text-gray-700 text-sm">Provide <strong>large-size, semi-transparent, naked-eye 3D</strong> and other diversified hardware forms to match different offline marketing scenarios</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-draw-polygon"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-orange-800 mb-2">All-Scenario AI Marketing Design</h4>' +
+                '<p class="text-gray-700 text-sm">Design complete AI offline marketing solutions based on exhibitions, stores, showrooms and other scenarios, <strong>comprehensive AI upgrades without dead ends</strong></p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 p-6 rounded-xl border border-gray-200">' +
+          '<h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">' +
+            '<i class="fas fa-cogs text-gray-600"></i>' +
+            'Customization Service Process' +
+          '</h4>' +
+          '<div class="grid md:grid-cols-4 gap-4">' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
+              '<p class="text-sm font-medium text-gray-700">Requirements Analysis</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
+              '<p class="text-sm font-medium text-gray-700">Solution Design</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
+              '<p class="text-sm font-medium text-gray-700">Custom Development</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
+              '<p class="text-sm font-medium text-gray-700">Deployment & Launch</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     },
     'Dịch vụ tùy chỉnh toàn diện': {
       title: 'Dịch vụ tùy chỉnh toàn diện',
-      content: 'Trưng bày số hóa các sản phẩm khác nhau, các doanh nghiệp khác nhau, cần các giải pháp tùy chỉnh cá nhân hóa hơn:\n' +
-      '- Tùy chỉnh nhân viên số: Tích hợp với tông màu thương hiệu doanh nghiệp, tạo hình ảnh và phong cách tương tác nhân vật số thương hiệu độc quyền\n' +
-      '- Nội dung tuyên truyền và đào tạo đại diện vận hành: Đội ngũ chuyên nghiệp phục vụ một kèm một, đại diện tạo, đào tạo và tối ưu hóa nội dung\n' +
-      '- Tùy chỉnh thiết bị hiển thị: Cung cấp các dạng phần cứng đa dạng như kích thước lớn, bán trong suốt, 3D không kính để phù hợp với các kịch bản tiếp thị ngoại tuyến khác nhau\n' +
-      '- Thiết kế tiếp thị AI toàn kịch bản: Thiết kế hoàn chỉnh giải pháp tiếp thị ngoại tuyến AI dựa trên hội chợ, cửa hàng, phòng trưng bày và các kịch bản khác, nâng cấp AI toàn diện không có điểm chết',
-      features: [
-      ],
-      process: [],
-      blocks: [
-        { title: 'Giám sát dữ liệu', desc: 'Theo dõi liên tục các chỉ số chính' },
-        { title: 'Tối ưu hóa mô hình', desc: 'Cải thiện hiệu suất thuật toán AI' },
-        { title: 'Tổng kết hiệu quả', desc: 'Đánh giá hàng tháng' }
-      ]
+      content: '<div class="space-y-6">' +
+        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
+          'Trưng bày số hóa các sản phẩm khác nhau, các doanh nghiệp khác nhau, cần <strong class="text-blue-600">các giải pháp tùy chỉnh cá nhân hóa hơn</strong>:' +
+        '</p>' +
+
+        '<div class="grid md:grid-cols-2 gap-6">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-user-tie"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-blue-800 mb-2">Tùy chỉnh nhân viên số</h4>' +
+                '<p class="text-gray-700 text-sm">Tích hợp với tông màu thương hiệu doanh nghiệp, tạo <strong>hình ảnh và phong cách tương tác nhân vật số thương hiệu độc quyền</strong></p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-bullhorn"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-green-800 mb-2">Nội dung tuyên truyền & đào tạo đại diện</h4>' +
+                '<p class="text-gray-700 text-sm">Đội ngũ chuyên nghiệp <strong>phục vụ một kèm một</strong>, đại diện tạo, đào tạo và tối ưu hóa nội dung</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-tv"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-purple-800 mb-2">Tùy chỉnh thiết bị hiển thị</h4>' +
+                '<p class="text-gray-700 text-sm">Cung cấp <strong>kích thước lớn, bán trong suốt, 3D không kính</strong> và các dạng phần cứng đa dạng khác để phù hợp với các kịch bản tiếp thị ngoại tuyến khác nhau</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+            '<div class="flex items-start gap-4">' +
+              '<div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+                '<i class="fas fa-draw-polygon"></i>' +
+              '</div>' +
+              '<div class="flex-1">' +
+                '<h4 class="text-lg font-bold text-orange-800 mb-2">Thiết kế tiếp thị AI toàn kịch bản</h4>' +
+                '<p class="text-gray-700 text-sm">Thiết kế hoàn chỉnh giải pháp tiếp thị ngoại tuyến AI dựa trên hội chợ, cửa hàng, phòng trưng bày và các kịch bản khác, <strong>nâng cấp AI toàn diện không có điểm chết</strong></p>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 p-6 rounded-xl border border-gray-200">' +
+          '<h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">' +
+            '<i class="fas fa-cogs text-gray-600"></i>' +
+            'Quy trình dịch vụ tùy chỉnh' +
+          '</h4>' +
+          '<div class="grid md:grid-cols-4 gap-4">' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
+              '<p class="text-sm font-medium text-gray-700">Phân tích nhu cầu</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
+              '<p class="text-sm font-medium text-gray-700">Thiết kế giải pháp</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
+              '<p class="text-sm font-medium text-gray-700">Phát triển tùy chỉnh</p>' +
+            '</div>' +
+            '<div class="text-center">' +
+              '<div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
+              '<p class="text-sm font-medium text-gray-700">Triển khai ra mắt</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>',
+
+
+
     }
   };
   currentService.value = serviceDetails[service.title as keyof typeof serviceDetails];
