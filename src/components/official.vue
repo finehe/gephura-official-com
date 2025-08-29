@@ -133,10 +133,10 @@
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
           <div v-for="service in i18n[currentLang].services.items" :key="service.title"
             class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
-            <img :src="getServiceImage(service.title)" :alt="service.title" class="w-full h-48 object-cover">
+            <img :src="getServiceImage(service.title)" :alt="service.title" class="w-full aspect-video object-cover">
             <div class="p-6">
               <h3 class="text-xl font-semibold mb-4">{{ service.title }}</h3>
-              <p class="text-gray-600 mb-6 min-h-[4.5rem] line-clamp-3">{{ service.description }}</p>
+              <p class="text-gray-600 mb-6 min-h-[6rem] line-clamp-5">{{ service.description }}</p>
               <button @click="showServiceDetails(service)"
                 class="!rounded-button text-blue-600 hover:bg-blue-50 px-6 py-2 border border-blue-600 transition-all whitespace-nowrap">
                 {{ i18n[currentLang].services.more }}
@@ -182,7 +182,7 @@
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
           <div v-for="case_ in i18n[currentLang].cases.items" :key="case_.title"
             class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
-            <img :src="getCaseImage(case_.title)" :alt="case_.title" class="w-full h-48 object-cover">
+            <img :src="getCaseImage(case_.title)" :alt="case_.title" class="w-full aspect-video object-cover">
             <div class="p-6">
               <h3 class="text-xl font-semibold mb-4">{{ case_.title }}</h3>
               <p class="text-gray-600">{{ case_.description }}</p>
@@ -206,7 +206,7 @@
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
               <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Email' : currentLang === 'cn' ? '电子邮箱' : 'Email' }}</span>
-              <a href="mailto:info@gephura.cn" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.cn</a>
+              <a href="mailto:info@gephura.com" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.com</a>
             </div>
 
             <!-- 企业微信二维码 -->
@@ -261,7 +261,7 @@ const currentService = ref({
 });
 const showBackTop = ref(false);
 type Language = 'en' | 'cn' | 'vi';
-const currentLang = ref<Language>('en');
+const currentLang = ref<Language>('cn');
 
 // 视频播放控制
 const handleVideoError = () => {
@@ -289,7 +289,7 @@ const i18n = {
       items: [
         {
           title: 'AI 导购一体机',
-          description: '包含软硬件结合的AI导购智能终端，实现数字世界与现实世界的直接接触。将传统的平面宣传材料和多媒体宣传内容以及销售人员的问答能力集成在一台低成本高效率的终端，实现传统BTL Marketing的全面AI升级。'
+          description: '包含软硬件结合的AI导购智能终端。将传统的平面宣传材料和多媒体宣传内容以及销售人员的问答能力集成在一台低成本高效率的终端，实现传统BTL Marketing的全面AI升级。'
         },
         {
           title: 'Gephura 数字员工平台',
