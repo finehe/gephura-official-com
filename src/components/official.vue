@@ -202,41 +202,34 @@
             </p>
           </div>
           <div class="grid md:grid-cols-3 grid-cols-1 gap-8">
-            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
-              <i class="fas fa-phone text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Phone' : currentLang === 'cn' ? '联系电话' : 'Điện thoại' }}</span>
-              <a href="tel:+8619821902019" class="text-blue-600 hover:text-blue-800 mt-2">+86 198-2190-2019</a>
-            </div>
+            <!-- 电子邮箱 -->
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
               <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
               <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Email' : currentLang === 'cn' ? '电子邮箱' : 'Email' }}</span>
               <a href="mailto:info@gephura.cn" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.cn</a>
             </div>
+
+            <!-- 企业微信二维码 -->
             <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
-              <i class="fas fa-map-marker-alt text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Address' : currentLang === 'cn' ? '公司地址' : 'Địa chỉ' }}</span>
-              <span class="text-gray-600 text-center mt-2">{{ 
-                currentLang === 'en' ? '3rd Floor, Huaqiang Building, 151 Keyuan Road, Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai, China' : 
-                currentLang === 'cn' ? '上海市浦东新区张江高科科苑路151号华强大厦三楼' :
-                'Technopark Tower, XWQR+FV, Vinhomes Ocean Park, Gia Lam, Ha Noi, Vietnam'
-              }}</span>
+              <i class="fas fa-qrcode text-green-600 text-2xl mb-4"></i>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'WeChat Work' : currentLang === 'cn' ? '企业微信' : 'WeChat Work' }}</span>
+              <div class="mt-4">
+                <img src="https://gephura-web.oss-cn-shanghai.aliyuncs.com/60c8a96d-de9a-4544-b616-d334b632ac34.jpg" :alt="currentLang === 'en' ? 'WeChat Work QR Code' : currentLang === 'cn' ? '企业微信二维码' : 'Mã QR WeChat Work'" class="w-36 h-36 object-contain">
+                <p class="text-gray-500 text-xs mt-2 text-center">{{ currentLang === 'en' ? 'Scan to add' : currentLang === 'cn' ? '扫码添加' : 'Quét để thêm' }}</p>
+              </div>
+            </div>
+
+            <!-- 微信公众号二维码 -->
+            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
+              <i class="fas fa-qrcode text-purple-600 text-2xl mb-4"></i>
+              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'WeChat Official' : currentLang === 'cn' ? '微信公众号' : 'WeChat Official' }}</span>
+              <div class="mt-4">
+                <img src="https://gephura-web.oss-cn-shanghai.aliyuncs.com/ee2330ff-7a6c-435d-bc21-82422e8914f9.jpg" :alt="currentLang === 'en' ? 'WeChat Official QR Code' : currentLang === 'cn' ? '微信公众号二维码' : 'Mã QR WeChat Official'" class="w-36 h-36 object-contain">
+                <p class="text-gray-500 text-xs mt-2 text-center">{{ currentLang === 'en' ? 'Scan to follow' : currentLang === 'cn' ? '扫码关注' : 'Quét để theo dõi' }}</p>
+              </div>
             </div>
           </div>
-          <div class="mt-12 flex flex-col items-center">
-            <h3 class="text-xl font-semibold mb-6">{{ 
-              currentLang === 'en' ? 'Scan QR Code to Add WeChat' : 
-              currentLang === 'cn' ? '扫码添加企业微信' :
-              'Quét mã QR để thêm WeChat doanh nghiệp'
-            }}</h3>
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <img src="/src/assets/wechat-qr.png" :alt="currentLang === 'en' ? 'WeChat QR Code' : currentLang === 'cn' ? '企业微信二维码' : 'Mã QR WeChat doanh nghiệp'" class="w-40 h-40 object-contain">
-              <p class="text-gray-500 text-sm mt-4 text-center">{{ 
-                currentLang === 'en' ? 'Scan to contact us' : 
-                currentLang === 'cn' ? '扫一扫，立即咨询' :
-                'Quét để liên hệ với chúng tôi'
-              }}</p>
-            </div>
-          </div>
+
         </div>
       </div>
     </section>
