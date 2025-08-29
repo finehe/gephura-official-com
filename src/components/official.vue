@@ -251,7 +251,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 // 直接使用静态路径，避免类型声明与 import.meta 限制
-const logoUrl = '/src/assets/web-logo.svg';
+const logoUrl = 'https://gephura-web.oss-cn-shanghai.aliyuncs.com/G-Logo-Black.svg';
 
 const currentNav = ref('home');
 const showServiceModal = ref(false);
