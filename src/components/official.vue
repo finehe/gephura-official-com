@@ -105,7 +105,7 @@
         <div class="flex items-center gap-12">
           <div class="flex-1">
             <h2 class="text-3xl font-bold mb-6">{{ i18n[currentLang].about.title }}</h2>
-            <p class="text-gray-600 text-lg leading-relaxed text-left">
+            <p class="text-gray-600 text-lg leading-relaxed text-left whitespace-pre-line">
               {{ i18n[currentLang].about.content }}
             </p>
           </div>
@@ -261,8 +261,8 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
-// 导入logo图片
-import logoImage from '../assets/web-logo.svg';
+// 直接使用静态路径，避免类型声明与 import.meta 限制
+const logoUrl = '/src/assets/web-logo.svg';
 
 const currentNav = ref('home');
 const showServiceModal = ref(false);
@@ -291,22 +291,22 @@ const i18n = {
     },
     about: {
       title: '关于我们',
-      content: '在 Gephura，我们致力于通过 AI 技术推动企业数字化转型和提升运营效率。我们的核心价值观——创新、效率和可持续发展，指引我们在 AI 时代赋能企业。'
+      content: '在 Gephura，我们致力于通过 AI线下营销解决方案，帮助企业实现品牌传播与销售模式的全面升级。我们坚信，未来的AI营销不仅仅停留在线上网络世界中，更需要渗透到展会、展厅、门店、广告等真实场景中。\n\n我们的产品与服务将 人工智能、数字人、硬件终端与内容创意高度整合，为企业打造从 吸引客户 → 互动沟通 → 数据洞察 → 转化成交 的完整闭环。团队核心成员来自全球知名企业，具备国际化视野、深厚的行业经验和AI技术落地能力。我们不仅懂AI，更懂市场与品牌。\n\n我们的使命是：用AI重新定义线下营销，助力企业全球增长。'
     },
     services: {
       title: '核心服务',
       items: [
         {
-          title: 'AI 应用咨询',
-          description: '为企业提供 AI 战略规划和落地方案，助力企业数字化转型'
+          title: 'AI 导购一体机',
+          description: '包含软硬件结合的AI导购智能终端，实现数字世界与现实世界的直接接触。将传统的平面宣传材料和多媒体宣传内容以及销售人员的问答能力集成在一台低成本高效率的终端，实现传统BTL Marketing的全面AI升级。'
         },
         {
-          title: '定制化 AI 应用开发',
-          description: '根据企业需求开发专属 AI 解决方案，提升业务效率'
+          title: 'Gephura 数字员工平台',
+          description: 'Gephura数字员工平台基于先进的AI智能体技术，融合全链条营销数据与实战经验，构建出一个极简、高效、低门槛的数字员工训练与管理平台。'
         },
         {
-          title: 'AI 技术与业务运营支持',
-          description: '提供全方位的 AI 技术支持和运营优化服务'
+          title: '全景定制服务',
+          description: '除了标准化的产品与平台，Gephura还为企业提供全面的定制化解决方案，确保AI营销能力与品牌需求深度契合。'
         }
       ],
       more: '了解更多'
@@ -315,16 +315,16 @@ const i18n = {
       title: '行业案例',
       items: [
         {
-          title: '电商 AI 解决方案',
-          description: '电商革新，通过 AI 驱动的个性化推荐和库存管理，变革在线零售体验。'
+          title: '全球展会',
+          description: '展会是品牌企业拓展市场、建⽴客⼾联系、发布新产品的重要窗⼝,尤其是国际展会,是出海企业布局全球市场的必经之路。但对于⼴⼤中⼩品牌企业⽽⾔,⼈员成本⾼、语⾔能⼒弱、展位接待效率低等问题始终存在。传统展位往往依赖人⼯讲解与纸质物料,难以在短时间内吸引客⼾、精准传达信息或形成有效互动,造成⾼投⼊、低转化的困局。AI导购数智⼈⼀体机可在不增加⼈员的前提下,实现多语种接待、专业讲解、客⼾留资与数据回传,成为企业性价⽐参展利器。'
         },
         {
-          title: '医疗 AI 系统',
-          description: '医疗创新，利用 AI 驱动的系统提升患者护理质量和医院运营效率。'
+          title: '品牌门店',
+          description: '在连锁⻔店、⾼端展厅等空间中,企业正寻求新的体验式营销⼿段,摆脱"静态陈列+被动销售"的传统模式。消费者更期待"能对话、会推荐、有引导"的智能体验,⽽⾮⾃取式浏览。通过部署AI导购终端,品牌可在零售⼀线实现主动迎宾、多语咨询、精准产品推荐和即时促销推送,不仅提升客⼾停留时间与转化率,也增强品牌科技感与辨识度。'
         },
         {
-          title: '制造业 AI 解决方案',
-          description: '制造卓越，通过 AI 和机器学习优化生产流程和质量控制。'
+          title: '服务大厅',
+          description: '银⾏、政务中⼼、医院⼤厅、机场等⾼频接待场景中,传统⼈⼯引导⽅式"问询重复、效率低、体验差"等问题。上⼀代数字⼈设备,交互⽣硬,简陋粗糙。成本⾼,使⽤⻔槛更⾼。以AI数字⼈导览为核⼼的智能接待终端,结合语⾳交互、视觉识别与场景定制内容,能够实现7x24⼩时的信息服务替代与引导分流。对于⼤量已有窗⼝与终端设备的场所,通过软件系统+定制内容的部署,实现低成本数字升级。'
         }
       ]
     },
@@ -335,34 +335,34 @@ const i18n = {
   },
   en: {
     nav: {
-      about: 'About',
-      services: 'Services',
-      cases: 'Cases',
-      contact: 'Contact'
+      about: 'About Us',
+      services: 'Core Services',
+      cases: 'Industry Cases',
+      contact: 'Contact Us'
     },
     hero: {
-      title: 'Drive Innovation and Growth through AI',
+      title: 'Drive Enterprise Innovation and Growth through AI',
       subtitle: 'Providing cutting-edge solutions and expert guidance to help enterprises thrive in the AI era.',
       cta: 'Get Started'
     },
     about: {
       title: 'About Us',
-      content: 'At Gephura, we are dedicated to driving digital transformation and operational efficiency through AI technology. Our core values - innovation, efficiency, and sustainability - guide us in empowering enterprises in the AI era.'
+      content: 'At Gephura, we are committed to helping enterprises achieve comprehensive upgrades in brand communication and sales models through AI-powered offline marketing solutions. We firmly believe that the future of AI marketing will not only stay in the online world, but must also permeate into real-world scenarios such as exhibitions, showrooms, retail stores, and advertising.\n\nOur products and services deeply integrate artificial intelligence, digital humans, hardware terminals, and creative content to build a complete closed loop for enterprises from attracting customers → interactive communication → data insights → conversion and closing. Our core team members come from globally renowned companies, bringing international perspectives, profound industry experience, and proven capabilities in implementing AI technologies. We not only understand AI, but also have deep insights into markets and brands.\n\nOur mission is to redefine offline marketing with AI and drive global growth for enterprises.'
     },
     services: {
       title: 'Core Services',
       items: [
         {
-          title: 'AI Consulting',
-          description: 'Provide AI strategy planning and implementation solutions to assist enterprise digital transformation'
+          title: 'AI Shopping Guide All-in-One Machine',
+          description: 'Combining software and hardware to create an intelligent AI shopping guide terminal that achieves direct contact between the digital world and the real world. It integrates traditional flat promotional materials and multimedia content with sales personnel\'s Q&A capabilities into a low-cost, high-efficiency terminal, achieving comprehensive AI upgrades to traditional BTL Marketing.'
         },
         {
-          title: 'Custom AI Development',
-          description: 'Develop exclusive AI solutions based on enterprise needs to improve business efficiency'
+          title: 'Gephura Digital Employee Platform',
+          description: 'Based on advanced AI intelligent agent technology, the Gephura Digital Employee Platform integrates comprehensive marketing data and practical experience to build a streamlined, efficient, and low-threshold digital employee training and management platform.'
         },
         {
-          title: 'AI Tech & Operations Support',
-          description: 'Provide comprehensive AI technical support and operational optimization services'
+          title: 'Comprehensive Customization Services',
+          description: 'In addition to standardized products and platforms, Gephura provides comprehensive customized solutions for enterprises to ensure that AI marketing capabilities are deeply integrated with brand requirements.'
         }
       ],
       more: 'Learn More'
@@ -371,54 +371,54 @@ const i18n = {
       title: 'Industry Cases',
       items: [
         {
-          title: 'E-commerce AI Solution',
-          description: 'Revolutionizing online retail through AI-driven personalized recommendations and inventory management.'
+          title: 'Global Exhibitions',
+          description: 'Exhibitions are an important window for brands to expand markets, establish customer connections, and release new products, especially international exhibitions, which are essential for enterprises going global. However, for large, medium, and small brands, issues such as high personnel costs, weak language skills, and low booth reception efficiency have always existed. Traditional booths often rely on manual explanations and paper materials, making it difficult to attract customers in a short time, convey information accurately, or create effective interactions, resulting in high investment and low conversion dilemmas. AI shopping guide digital humans can achieve multi-language reception, professional explanations, customer data collection, and data return without increasing personnel, becoming a cost-effective tool for enterprises to participate in exhibitions.'
         },
         {
-          title: 'Healthcare AI System',
-          description: 'Innovating healthcare with AI-powered systems to enhance patient care and hospital operations.'
+          title: 'Brand Stores',
+          description: 'In retail stores, high-end showrooms, and other spaces, enterprises are seeking new experiential marketing methods to break away from the traditional model of "static display + passive sales". Consumers expect "conversational, recommendable, and guiding" intelligent experiences rather than self-service browsing. By deploying AI shopping guide terminals, brands can achieve active customer greeting, multi-language consultation, precise product recommendations, and instant promotions in the retail frontline, not only improving customer stay time and conversion rates but also enhancing brand technological appeal and recognition.'
         },
         {
-          title: 'Manufacturing AI Solution',
-          description: 'Achieving manufacturing excellence through AI and machine learning for process and quality optimization.'
+          title: 'Service Halls',
+          description: 'In high-frequency reception scenarios such as banks, government centers, hospitals, and airport halls, traditional manual guidance methods have problems such as repetitive inquiries, low efficiency, and poor experiences. The previous generation of digital human devices had stiff interactions, crude and simple designs, high costs, and higher usage thresholds. Taking AI digital human guidance as the core, intelligent reception terminals combined with voice interaction, visual recognition, and customized scene content can achieve 7x24-hour information services and diversion guidance. For many existing window and terminal equipment venues, software systems + customized content deployment can achieve low-cost digital upgrades.'
         }
       ]
     },
     contact: {
       title: 'Let\'s Shape the Future Together',
-      description: 'Ready to leverage the power of AI for your business? Our expert team is here to guide you through your AI journey. Contact us now to explore how we can help you achieve unprecedented growth and efficiency.'
+      description: 'Ready to harness the power of AI to drive your business forward? Our expert team is here to provide comprehensive guidance throughout your AI journey. Contact us immediately to explore how we can help you achieve unprecedented growth and efficiency.'
     }
   },
   vi: {
     nav: {
       about: 'Về chúng tôi',
-      services: 'Dịch vụ',
-      cases: 'Dự án',
-      contact: 'Liên hệ'
+      services: 'Dịch vụ cốt lõi',
+      cases: 'Dự án ngành',
+      contact: 'Liên hệ chúng tôi'
     },
     hero: {
-      title: 'Thúc đẩy đổi mới và tăng trưởng thông qua AI',
+      title: 'Thúc đẩy đổi mới và tăng trưởng doanh nghiệp thông qua AI',
       subtitle: 'Cung cấp giải pháp tiên tiến và hướng dẫn chuyên môn để giúp doanh nghiệp phát triển trong kỷ nguyên AI.',
       cta: 'Bắt đầu ngay'
     },
     about: {
       title: 'Về chúng tôi',
-      content: 'Tại Gephura, chúng tôi cam kết thúc đẩy chuyển đổi số và hiệu quả hoạt động thông qua công nghệ AI. Các giá trị cốt lõi của chúng tôi - đổi mới, hiệu quả và phát triển bền vững - hướng dẫn chúng tôi trong việc trao quyền cho doanh nghiệp trong kỷ nguyên AI.'
+      content: 'Tại Gephura, chúng tôi cam kết giúp doanh nghiệp đạt được nâng cấp toàn diện về hoạt động truyền thông thương hiệu và mô hình bán hàng thông qua các giải pháp tiếp thị ngoại tuyến dựa trên AI. Chúng tôi tin rằng tương lai của tiếp thị AI không chỉ dừng lại trong thế giới trực tuyến mà còn phải thâm nhập vào các bối cảnh thực tế như hội chợ, phòng trưng bày, cửa hàng bán lẻ và quảng cáo.\n\nSản phẩm và dịch vụ của chúng tôi tích hợp sâu trí tuệ nhân tạo, nhân vật số, thiết bị phần cứng và sáng tạo nội dung để xây dựng một vòng khép kín hoàn chỉnh cho doanh nghiệp từ thu hút khách hàng → tương tác giao tiếp → phân tích dữ liệu → chuyển đổi và chốt đơn. Các thành viên nòng cốt của đội ngũ đến từ các công ty danh tiếng toàn cầu, sở hữu tầm nhìn quốc tế, kinh nghiệm ngành sâu sắc và năng lực triển khai công nghệ AI thực chiến. Chúng tôi không chỉ hiểu AI mà còn am hiểu thị trường và thương hiệu.\n\nSứ mệnh của chúng tôi là: dùng AI tái định nghĩa tiếp thị ngoại tuyến và thúc đẩy tăng trưởng toàn cầu cho doanh nghiệp.'
     },
     services: {
       title: 'Dịch vụ cốt lõi',
       items: [
         {
-          title: 'Tư vấn AI',
-          description: 'Cung cấp kế hoạch chiến lược AI và giải pháp triển khai để hỗ trợ chuyển đổi số doanh nghiệp'
+          title: 'Máy bán hàng thông minh AI tích hợp tất cả',
+          description: 'Kết hợp phần mềm và phần cứng để tạo ra thiết bị đầu cuối hướng dẫn mua sắm thông minh AI, đạt được tiếp xúc trực tiếp giữa thế giới số và thế giới thực. Nó tích hợp các tài liệu quảng cáo phẳng truyền thống và nội dung đa phương tiện với khả năng Q&A của nhân viên bán hàng vào một thiết bị đầu cuối có chi phí thấp, hiệu quả cao, đạt được nâng cấp AI toàn diện cho BTL Marketing truyền thống.'
         },
         {
-          title: 'Phát triển AI tùy chỉnh',
-          description: 'Phát triển giải pháp AI độc quyền dựa trên nhu cầu doanh nghiệp để cải thiện hiệu quả kinh doanh'
+          title: 'Nền tảng nhân viên số Gephura',
+          description: 'Dựa trên công nghệ đại lý thông minh AI tiên tiến, nền tảng nhân viên số Gephura tích hợp dữ liệu tiếp thị toàn diện và kinh nghiệm thực tế để xây dựng một nền tảng đào tạo và quản lý nhân viên số đơn giản hóa, hiệu quả và có ngưỡng thấp.'
         },
         {
-          title: 'Hỗ trợ kỹ thuật & vận hành AI',
-          description: 'Cung cấp dịch vụ hỗ trợ kỹ thuật AI toàn diện và tối ưu hóa vận hành'
+          title: 'Dịch vụ tùy chỉnh toàn diện',
+          description: 'Ngoài các sản phẩm và nền tảng tiêu chuẩn, Gephura cung cấp các giải pháp tùy chỉnh toàn diện cho doanh nghiệp để đảm bảo rằng khả năng tiếp thị AI được tích hợp sâu với yêu cầu thương hiệu.'
         }
       ],
       more: 'Tìm hiểu thêm'
@@ -427,26 +427,25 @@ const i18n = {
       title: 'Dự án ngành',
       items: [
         {
-          title: 'Giải pháp AI thương mại điện tử',
-          description: 'Cách mạng hóa bán lẻ trực tuyến thông qua đề xuất cá nhân hóa và quản lý kho được điều khiển bởi AI.'
+          title: 'Hội chợ toàn cầu',
+          description: 'Hội chợ là cửa sổ quan trọng để các thương hiệu mở rộng thị trường, thiết lập kết nối khách hàng và phát hành sản phẩm mới, đặc biệt là hội chợ quốc tế, là điều cần thiết cho các doanh nghiệp vươn ra toàn cầu. Tuy nhiên, đối với các thương hiệu lớn, vừa và nhỏ, các vấn đề như chi phí nhân sự cao, kỹ năng ngôn ngữ yếu và hiệu quả tiếp đón gian hàng thấp luôn tồn tại. Gian hàng truyền thống thường dựa vào giải thích thủ công và tài liệu giấy, khiến khó thu hút khách hàng trong thời gian ngắn, truyền tải thông tin chính xác hoặc tạo ra tương tác hiệu quả, dẫn đến đầu tư cao và chuyển đổi thấp. Nhân vật số hướng dẫn mua sắm AI có thể đạt được tiếp đón đa ngôn ngữ, giải thích chuyên nghiệp, thu thập dữ liệu khách hàng và trả lại dữ liệu mà không tăng nhân sự, trở thành công cụ hiệu quả về chi phí cho doanh nghiệp tham gia hội chợ.'
         },
         {
-          title: 'Hệ thống AI y tế',
-          description: 'Đổi mới chăm sóc sức khỏe với hệ thống được hỗ trợ bởi AI để nâng cao chất lượng chăm sóc bệnh nhân và hoạt động bệnh viện.'
+          title: 'Cửa hàng thương hiệu',
+          description: 'Trong các không gian cửa hàng bán lẻ, phòng trưng bày cao cấp và các không gian khác, doanh nghiệp đang tìm kiếm các phương pháp tiếp thị trải nghiệm mới để thoát khỏi mô hình truyền thống "trưng bày tĩnh + bán hàng thụ động". Người tiêu dùng mong đợi trải nghiệm thông minh "có thể trò chuyện, có thể đề xuất và có thể hướng dẫn" chứ không phải là duyệt tự phục vụ. Bằng cách triển khai thiết bị đầu cuối hướng dẫn mua sắm AI, các thương hiệu có thể đạt được chào đón khách hàng chủ động, tư vấn đa ngôn ngữ, đề xuất sản phẩm chính xác và khuyến mãi tức thì ở tuyến đầu bán lẻ, không chỉ cải thiện thời gian lưu trú và tỷ lệ chuyển đổi của khách hàng mà còn nâng cao sức hấp dẫn công nghệ và khả năng nhận diện thương hiệu.'
         },
         {
-          title: 'Giải pháp AI sản xuất',
-          description: 'Đạt được sự xuất sắc trong sản xuất thông qua AI và máy học để tối ưu hóa quy trình và chất lượng.'
+          title: 'Sảnh dịch vụ',
+          description: 'Trong các kịch bản tiếp đón tần suất cao như ngân hàng, trung tâm chính quyền, bệnh viện và sảnh sân bay, các phương pháp hướng dẫn thủ công truyền thống có vấn đề như câu hỏi lặp lại, hiệu quả thấp và trải nghiệm kém. Thế hệ trước của thiết bị nhân vật số có tương tác cứng nhắc, thiết kế thô sơ, chi phí cao và ngưỡng sử dụng cao hơn. Lấy hướng dẫn nhân vật số AI làm cốt lõi, thiết bị đầu cuối tiếp đón thông minh kết hợp với tương tác giọng nói, nhận dạng thị giác và nội dung tùy chỉnh theo cảnh có thể đạt được dịch vụ thông tin 7x24 giờ và hướng dẫn phân luồng. Đối với nhiều địa điểm có cửa sổ và thiết bị đầu cuối hiện có, việc triển khai hệ thống phần mềm + nội dung tùy chỉnh có thể đạt được nâng cấp số với chi phí thấp.'
         }
       ]
     },
     contact: {
       title: 'Hãy cùng nhau kiến tạo tương lai',
-      description: 'Sẵn sàng tận dụng sức mạnh của AI cho doanh nghiệp của bạn? Đội ngũ chuyên gia của chúng tôi luôn sẵn sàng hướng dẫn bạn trong hành trình AI. Liên hệ với chúng tôi ngay để khám phá cách chúng tôi có thể giúp bạn đạt được tăng trưởng và hiệu quả chưa từng có.'
+      description: 'Sẵn sàng tận dụng sức mạnh của AI để thúc đẩy doanh nghiệp của bạn tiến lên? Đội ngũ chuyên gia của chúng tôi luôn sẵn sàng cung cấp hướng dẫn toàn diện trong suốt hành trình AI của bạn. Liên hệ với chúng tôi ngay để khám phá cách chúng tôi có thể giúp bạn đạt được tăng trưởng và hiệu quả chưa từng có.'
     }
   }
 };
-const logoUrl = logoImage;
 const heroImage = 'https://public.readdy.ai/ai/img_res/1755778b77a0e79d2ec06e0b82414bf2.jpg';
 const aboutImage = 'https://public.readdy.ai/ai/img_res/54c76814d2ff0793cc44840583d0d590.jpg';
 
@@ -512,13 +511,18 @@ const getBlockColor = (index: number) => {
 
 const showServiceDetails = (service: any) => {
   const serviceDetails = {
-    'AI 应用咨询': {
-      title: 'AI 应用咨询',
-      content: '解决企业在AI应用上的痛点，提供全面的场景诊断与规划服务。评估业务流程的数字化成熟度，筛选具有高价值的AI应用场景，从而实现成本节约、效率提升和风险控制。我们提供12周快速验证方案设计，帮助企业避免盲目投入，锁定可量化的改进目标。',
+    'AI 导购一体机': {
+      title: 'AI 导购一体机',
+      content: 'AI导购数字人一体机，用靓丽灵动的数字人形象吸引客户驻足，用多语种自然对话的数字人讲解，结合产品多模态展示打动客户，用定制化的产品知识库和话术实现客户双向深度沟通，并通过主动数据分析掌握客户偏好与购买意向。\n\n' +
+        '1. 线下AI多模态体验<br>' +
+        '将传统平面宣传与人工讲解升级为AI多模态智能交互，整合产品图文展示与数字人讲解，实现多语种自然对话的双向客户沟通。\n\n' +
+        '2. 闭环式AI线下营销流程\n' +
+        '从“吸引-互动-留资-分析”全流程由AI驱动完成。系统自动识别客户兴趣点、行为路径引导用户留资，数据分析形成营销数据闭环，助力精准跟进与持续优化。\n\n' +
+        '3. 软硬一体，全场景交付\n' +
+        '软硬件深度集成设计，一台设备即完成客户接待、内容展示、语音互动、客户留资等全流程，真正实现“真实世界的AI即插即用”。适配展会、展厅、门店等多种营销场景。\n\n' +
+        '4. 极简训练，快速上岗\n' +
+        '后台系统以"低门槛、高智能"为设计理念，内置AI辅助训练模块。企业只需上传产品资料，系统即可自动分析学习，生成产品问答库与数字人介绍内容，无额外使用成本。',
       features: [
-        '业务流程数字化成熟度评估',
-        '高价值AI应用场景筛选（成本节约/效率提升/风险控制）',
-        '12周快速验证方案设计'
       ],
       process: [
         { title: '业务流程评估', desc: '评估企业数字化基础' },
@@ -527,43 +531,66 @@ const showServiceDetails = (service: any) => {
       ],
       blocks: []
     },
-    'AI Consulting': {
-      title: 'AI Consulting',
-      content: 'Addressing enterprise pain points in AI applications by providing comprehensive scenario diagnosis and planning services. We evaluate the digital maturity of business processes and identify high-value AI application scenarios to achieve cost savings, efficiency improvements, and risk control. We offer a 12-week rapid validation program design to help enterprises avoid blind investments and lock in quantifiable improvement goals.',
+    'AI Shopping Guide All-in-One Machine': {
+      title: 'AI Shopping Guide All-in-One Machine',
+      content: 'AI shopping guide digital human all-in-one machine uses beautiful and dynamic digital human images to attract customers, uses multi-language natural dialogue digital human explanations to impress customers, combines customized product knowledge base and scripts to achieve two-way in-depth customer communication, and masters customer preferences and purchase intentions through active data analysis.\n\n' +
+        '1. Offline AI multimodal experience<br>' +
+        'Upgrade traditional flat promotions and manual explanations to AI multimodal intelligent interaction, integrating product graphic display with digital human explanation, achieving multi-language natural dialogue for two-way customer communication.\n\n' +
+        '2. Closed-loop AI offline marketing process<br>' +
+        'The entire process from "attract-interact-collect-analyze" is AI-driven. The system automatically identifies customer interest points, guides user behavior paths, enables users to leave information, and forms a data closed loop for marketing, assisting in precise follow-up and continuous optimization.\n\n' +
+        '3. Software-hardware integration, all-scenario delivery<br>' +
+        'Deep integration design of software and hardware. One device completes the entire process of customer reception, content display, voice interaction, and customer data collection, truly achieving "plug-and-play AI in the real world". Adaptable to exhibition halls, showrooms, stores, and other marketing scenarios.\n\n' +
+        '4. Simple training, quick onboarding<br>' +
+        'The backend system takes "low-threshold, high-intelligence" as the design concept, with built-in AI-assisted training modules. Enterprises only need to upload product materials, and the system can automatically analyze and learn, generate product Q&A databases and digital human introduction content, with no additional usage costs.',
       features: [
-        'Business Process Digital Maturity Assessment',
-        'High-Value AI Application Scenario Screening (Cost Savings/Efficiency Improvement/Risk Control)',
-        '12-Week Rapid Validation Program Design'
       ],
       process: [
-        { title: 'Business Process Assessment', desc: 'Evaluate enterprise digital foundation' },
-        { title: 'Scenario Screening', desc: 'Identify AI application potential areas' },
-        { title: 'Rapid Validation', desc: 'Validate program feasibility within 12 weeks' }
+        { title: 'Business Process Assessment', desc: 'Assess enterprise digital foundation' },
+        { title: 'Scenario Screening', desc: 'Determine AI application potential areas' },
+        { title: 'Rapid Validation', desc: 'Validate solution feasibility within 12 weeks' }
       ],
       blocks: []
     },
-    'Tư vấn AI': {
-      title: 'Tư vấn AI',
-      content: 'Giải quyết các điểm đau của doanh nghiệp trong ứng dụng AI bằng cách cung cấp dịch vụ chẩn đoán và lập kế hoạch kịch bản toàn diện. Chúng tôi đánh giá mức độ trưởng thành số của quy trình kinh doanh và xác định các kịch bản ứng dụng AI có giá trị cao để đạt được tiết kiệm chi phí, cải thiện hiệu quả và kiểm soát rủi ro. Chúng tôi cung cấp thiết kế chương trình xác thực nhanh 12 tuần để giúp doanh nghiệp tránh đầu tư mù quáng và khóa các mục tiêu cải tiến có thể định lượng.',
+    'Máy bán hàng thông minh AI tích hợp tất cả': {
+      title: 'Máy bán hàng thông minh AI tích hợp tất cả',
+      content: 'Máy bán hàng hướng dẫn AI nhân vật số tích hợp tất cả sử dụng hình ảnh nhân vật số đẹp đẽ và năng động để thu hút khách hàng dừng lại, sử dụng giải thích nhân vật số đối thoại tự nhiên đa ngôn ngữ để gây ấn tượng với khách hàng, kết hợp cơ sở kiến thức sản phẩm tùy chỉnh và kịch bản để đạt được giao tiếp sâu hai chiều với khách hàng, và nắm vững sở thích và ý định mua hàng của khách hàng thông qua phân tích dữ liệu chủ động.\n\n' +
+        '1. Trải nghiệm đa phương thức AI ngoại tuyến<br>' +
+        'Nâng cấp quảng cáo phẳng truyền thống và giải thích thủ công thành tương tác thông minh đa phương thức AI, tích hợp hiển thị đồ họa sản phẩm với giải thích nhân vật số, đạt được giao tiếp hai chiều tự nhiên đa ngôn ngữ với khách hàng.\n\n' +
+        '2. Quy trình tiếp thị ngoại tuyến AI khép kín<br>' +
+        'Toàn bộ quy trình từ "thu hút-tương tác-thu thập-phân tích" được điều khiển bởi AI. Hệ thống tự động xác định điểm quan tâm của khách hàng, hướng dẫn đường dẫn hành vi người dùng, cho phép người dùng để lại thông tin, và hình thành vòng khép kín dữ liệu tiếp thị, hỗ trợ theo dõi chính xác và tối ưu hóa liên tục.\n\n' +
+        '3. Tích hợp phần mềm-phần cứng, giao hàng tất cả kịch bản<br>' +
+        'Thiết kế tích hợp sâu phần mềm và phần cứng. Một thiết bị hoàn thành toàn bộ quy trình tiếp đón khách hàng, hiển thị nội dung, tương tác giọng nói và thu thập dữ liệu khách hàng, thực sự đạt được "AI cắm là chạy trong thế giới thực". Phù hợp với hội chợ, phòng trưng bày, cửa hàng và các kịch bản tiếp thị khác.\n\n' +
+        '4. Đào tạo đơn giản, onboard nhanh chóng<br>' +
+        'Hệ thống backend lấy "ngưỡng thấp, trí thông minh cao" làm khái niệm thiết kế, với các mô-đun hỗ trợ đào tạo AI tích hợp. Doanh nghiệp chỉ cần tải lên tài liệu sản phẩm, hệ thống có thể tự động phân tích và học, tạo cơ sở dữ liệu Q&A sản phẩm và nội dung giới thiệu nhân vật số, không có chi phí sử dụng bổ sung.',
       features: [
-        'Đánh giá mức độ trưởng thành số của quy trình kinh doanh',
-        'Sàng lọc kịch bản ứng dụng AI có giá trị cao (Tiết kiệm chi phí/Cải thiện hiệu quả/Kiểm soát rủi ro)',
-        'Thiết kế chương trình xác thực nhanh 12 tuần'
       ],
       process: [
         { title: 'Đánh giá quy trình kinh doanh', desc: 'Đánh giá nền tảng số của doanh nghiệp' },
-        { title: 'Sàng lọc kịch bản', desc: 'Xác định các lĩnh vực tiềm năng ứng dụng AI' },
-        { title: 'Xác thực nhanh', desc: 'Xác thực tính khả thi của chương trình trong vòng 12 tuần' }
+        { title: 'Sàng lọc kịch bản', desc: 'Xác định lĩnh vực tiềm năng ứng dụng AI' },
+        { title: 'Xác thực nhanh', desc: 'Xác thực tính khả thi giải pháp trong 12 tuần' }
       ],
       blocks: []
     },
-    '定制化 AI 应用开发': {
-      title: '定制化 AI 应用开发',
-      content: '针对传统软件改造成本高、现有SaaS不符合业务需求的问题，提供轻量级AI工具开发服务。我们的特点是模块化开发，基于开源框架快速搭建。我们采用渐进式迭代，从单功能MVP到系统集成。典型应用场景包括直播电商智能话术系统和企业微信定制化商城等。',
+    'Gephura 数字员工平台': {
+      title: 'Gephura 数字员工平台',
+      content: '只需 三步，您的AI数字员工即可快速上岗：\n' +
+      '- 便捷创建产品库\n' +
+      '  - 拖拽上传产品资料，AI自动完成信息解析与问答库生成\n' +
+      '  - 支持自动多语种翻译与内容优化\n' +
+      '  - 多模态展示产品（图文、视频、3D模型等）\n' +
+      '- 聘用并培训数字员工\n' +
+      '  - 平台提供多样化数字员工形象（不同风格、性格、表现力）\n' +
+      '  - 企业可选择符合品牌调性的数字人，30分钟即可完成培训上岗\n' +
+      '  - 具备循环学习能力，越用越智能\n' +
+      '- 个性化场景设定，开启营销活动\n' +
+      '  - 支持展会、门店、展厅等多种应用场景\n' +
+      '  - 自定义产品展示与数字人对话行为风格\n' +
+      '  - 打造高度贴合场景的互动体验\n' +
+      '- 活动复盘，销售转化\n' +
+      '  - 详细分析每位客户的互动行为与意向\n' +
+      '  - 数据直连CRM，精准线索转化\n' +
+      '  - 助力企业实现高效销售增长' ,
       features: [
-        '模块化开发：基于开源框架快速搭建',
-        '渐进式迭代：从单功能MVP到系统集成',
-        '典型场景：✔ 直播电商智能话术系统 ✔ 企业微信定制化商城'
       ],
       process: [],
       blocks: [
@@ -572,43 +599,70 @@ const showServiceDetails = (service: any) => {
         { title: '定制化', desc: '满足特定业务需求' }
       ]
     },
-    'Custom AI Development': {
-      title: 'Custom AI Development',
-      content: 'Addressing the high cost of traditional software transformation and the mismatch between existing SaaS and business needs by providing lightweight AI tool development services. Our approach features modular development based on open-source frameworks for rapid deployment. We employ progressive iteration, from single-function MVP to system integration. Typical application scenarios include live e-commerce intelligent dialogue systems and WeChat Work customized malls.',
+    'Gephura Digital Employee Platform': {
+      title: 'Gephura Digital Employee Platform',
+      content: 'Just three steps for your AI digital employee to go online quickly:\n' +
+      '- Convenient product library creation\n' +
+      '  - Drag and drop to upload product materials, AI automatically completes information parsing and Q&A database generation\n' +
+      '  - Support automatic multi-language translation and content optimization\n' +
+      '  - Multi-modal product display (graphics, videos, 3D models, etc.)\n' +
+      '- Hire and train digital employees\n' +
+      '  - The platform provides diverse digital employee images (different styles, personalities, expressiveness)\n' +
+      '  - Enterprises can choose digital humans that match brand tonality, 30 minutes to complete training and onboarding\n' +
+      '  - Possess cyclic learning ability, gets smarter the more it\'s used\n' +
+      '- Personalized scenario settings, launch marketing activities\n' +
+      '  - Supports exhibition halls, stores, showrooms and other application scenarios\n' +
+      '  - Customize product display and digital human dialogue behavior style\n' +
+      '  - Create highly fitting interactive experiences for scenarios\n' +
+      '- Activity review, sales conversion\n' +
+      '  - Detailed analysis of each customer\'s interactive behavior and intentions\n' +
+      '  - Data directly connected to CRM, precise lead conversion\n' +
+      '  - Assist enterprises in achieving efficient sales growth',
       features: [
-        'Modular Development: Rapid deployment based on open-source frameworks',
-        'Progressive Iteration: From single-function MVP to system integration',
-        'Typical Scenarios: ✔ Live E-commerce Intelligent Dialogue System ✔ WeChat Work Customized Mall'
       ],
       process: [],
       blocks: [
-        { title: 'Modular', desc: 'Rapid deployment, flexible combination' },
+        { title: 'Modular', desc: 'Rapid assembly, flexible combination' },
         { title: 'Progressive', desc: 'MVP validation, gradual integration' },
-        { title: 'Customized', desc: 'Meet specific business needs' }
+        { title: 'Customized', desc: 'Satisfy specific business needs' }
       ]
     },
-    'Phát triển AI tùy chỉnh': {
-      title: 'Phát triển AI tùy chỉnh',
-      content: 'Giải quyết chi phí chuyển đổi phần mềm truyền thống cao và sự không phù hợp giữa SaaS hiện có và nhu cầu kinh doanh bằng cách cung cấp dịch vụ phát triển công cụ AI nhẹ. Phương pháp của chúng tôi có tính năng phát triển mô-đun dựa trên các framework mã nguồn mở để triển khai nhanh chóng. Chúng tôi sử dụng lặp lại tiến bộ, từ MVP chức năng đơn lẻ đến tích hợp hệ thống. Các kịch bản ứng dụng điển hình bao gồm hệ thống đối thoại thông minh thương mại điện tử trực tiếp và cửa hàng tùy chỉnh WeChat Work.',
+    'Nền tảng nhân viên số Gephura': {
+      title: 'Nền tảng nhân viên số Gephura',
+      content: 'Chỉ cần ba bước, nhân viên số AI của bạn có thể nhanh chóng đi vào hoạt động:\n' +
+      '- Tạo thư viện sản phẩm tiện lợi\n' +
+      '  - Kéo thả tải lên tài liệu sản phẩm, AI tự động hoàn thành phân tích thông tin và tạo cơ sở dữ liệu Q&A\n' +
+      '  - Hỗ trợ dịch tự động đa ngôn ngữ và tối ưu hóa nội dung\n' +
+      '  - Hiển thị sản phẩm đa phương thức (đồ họa, video, mô hình 3D, v.v.)\n' +
+      '- Tuyển dụng và đào tạo nhân viên số\n' +
+      '  - Nền tảng cung cấp hình ảnh nhân viên số đa dạng (kiểu dáng, tính cách, biểu đạt khác nhau)\n' +
+      '  - Doanh nghiệp có thể chọn nhân vật số phù hợp với tông màu thương hiệu, 30 phút hoàn thành đào tạo và onboard\n' +
+      '  - Sở hữu khả năng học tập tuần hoàn, càng dùng càng thông minh\n' +
+      '- Thiết lập kịch bản cá nhân hóa, khởi động hoạt động tiếp thị\n' +
+      '  - Hỗ trợ hội chợ, cửa hàng, phòng trưng bày và các kịch bản ứng dụng khác\n' +
+      '  - Tùy chỉnh hiển thị sản phẩm và phong cách hành vi đối thoại nhân vật số\n' +
+      '  - Tạo trải nghiệm tương tác phù hợp cao với kịch bản\n' +
+      '- Tổng kết hoạt động, chuyển đổi bán hàng\n' +
+      '  - Phân tích chi tiết hành vi tương tác và ý định của từng khách hàng\n' +
+      '  - Dữ liệu kết nối trực tiếp với CRM, chuyển đổi lead chính xác\n' +
+      '  - Hỗ trợ doanh nghiệp đạt được tăng trưởng bán hàng hiệu quả',
       features: [
-        'Phát triển mô-đun: Triển khai nhanh dựa trên các framework mã nguồn mở',
-        'Lặp lại tiến bộ: Từ MVP chức năng đơn lẻ đến tích hợp hệ thống',
-        'Kịch bản điển hình: ✔ Hệ thống đối thoại thông minh thương mại điện tử trực tiếp ✔ Cửa hàng tùy chỉnh WeChat Work'
       ],
       process: [],
       blocks: [
-        { title: 'Mô-đun', desc: 'Triển khai nhanh, kết hợp linh hoạt' },
+        { title: 'Mô-đun', desc: 'Xây dựng nhanh, kết hợp linh hoạt' },
         { title: 'Tiến bộ', desc: 'Xác thực MVP, tích hợp dần dần' },
         { title: 'Tùy chỉnh', desc: 'Đáp ứng nhu cầu kinh doanh cụ thể' }
       ]
     },
-    'AI 技术与业务运营支持': {
-      title: 'AI 技术与业务运营支持',
-      content: '我们解决技术供应商交付后缺乏持续支持、效果难以维持的问题，提供技术运营陪跑服务。我们采用季度制服务包，包括数据监测、模型优化和异常响应。我们与业务指标对齐，每月进行效果复盘会议，并进行知识转移，帮助企业建设自有团队能力。',
+    '全景定制服务': {
+      title: '全景定制服务',
+      content: '数字化展示不同的产品，不同的企业，需要更加个性化的定制方案：\n' +
+      '- 数字员工定制：结合企业品牌调性，打造专属品牌数字人形象与互动风格\n' +
+      '- 宣传内容与训练代运营：专业团队一对一服务，代为生成、训练与优化内容\n' +
+      '- 展示设备定制：提供大尺寸，半透明，裸眼3D等多样化硬件形态，匹配不同线下营销场景\n' +
+      '- 全场景AI营销设计：根据展会、门店、展厅等场景，完整设计AI线下营销方案，无死角全面AI升级',
       features: [
-        '季度制服务包：数据监测+模型优化+异常响应',
-        '业务指标对齐：每月效果复盘会议',
-        '知识转移：企业自有团队能力建设'
       ],
       process: [],
       blocks: [
@@ -617,34 +671,36 @@ const showServiceDetails = (service: any) => {
         { title: '效果复盘', desc: '每月评估' }
       ]
     },
-    'AI Tech & Operations Support': {
-      title: 'AI Tech & Operations Support',
-      content: 'We address the lack of continuous support and difficulty in maintaining effectiveness after technical vendor delivery by providing technical operations support services. We offer quarterly service packages including data monitoring, model optimization, and anomaly response. We align with business metrics, conduct monthly effectiveness review meetings, and facilitate knowledge transfer to help enterprises build their own team capabilities.',
+    'Comprehensive Customization Services': {
+      title: 'Comprehensive Customization Services',
+      content: 'Different products and different enterprises need more personalized customized solutions:\n' +
+      '- Digital employee customization: Integrate with enterprise brand tonality to create exclusive brand digital human images and interactive styles\n' +
+      '- Content and training outsourcing: Professional team one-on-one service, help generate, train and optimize content\n' +
+      '- Display device customization: Provide large-size, semi-transparent, naked-eye 3D and other diversified hardware forms to match different offline marketing scenarios\n' +
+      '- All-scenario AI marketing design: Design complete AI offline marketing solutions based on exhibitions, stores, showrooms and other scenarios, comprehensive AI upgrades without dead ends',
       features: [
-        'Quarterly Service Package: Data Monitoring + Model Optimization + Anomaly Response',
-        'Business Metrics Alignment: Monthly Effectiveness Review Meetings',
-        'Knowledge Transfer: Enterprise Team Capability Building'
       ],
       process: [],
       blocks: [
-        { title: 'Data Monitoring', desc: 'Continuous tracking of key metrics' },
-        { title: 'Model Optimization', desc: 'Enhance AI algorithm performance' },
-        { title: 'Effectiveness Review', desc: 'Monthly assessment' }
+        { title: 'Data Monitoring', desc: 'Continuous tracking of key indicators' },
+        { title: 'Model Optimization', desc: 'Improve AI algorithm performance' },
+        { title: 'Effectiveness Review', desc: 'Monthly review' }
       ]
     },
-    'Hỗ trợ kỹ thuật & vận hành AI': {
-      title: 'Hỗ trợ kỹ thuật & vận hành AI',
-      content: 'Chúng tôi giải quyết vấn đề thiếu hỗ trợ liên tục và khó khăn trong việc duy trì hiệu quả sau khi nhà cung cấp kỹ thuật giao hàng bằng cách cung cấp dịch vụ hỗ trợ vận hành kỹ thuật. Chúng tôi cung cấp các gói dịch vụ hàng quý bao gồm giám sát dữ liệu, tối ưu hóa mô hình và phản hồi bất thường. Chúng tôi liên kết với các chỉ số kinh doanh, tiến hành các cuộc họp đánh giá hiệu quả hàng tháng và tạo điều kiện chuyển giao kiến thức để giúp doanh nghiệp xây dựng khả năng đội ngũ của riêng họ.',
+    'Dịch vụ tùy chỉnh toàn diện': {
+      title: 'Dịch vụ tùy chỉnh toàn diện',
+      content: 'Trưng bày số hóa các sản phẩm khác nhau, các doanh nghiệp khác nhau, cần các giải pháp tùy chỉnh cá nhân hóa hơn:\n' +
+      '- Tùy chỉnh nhân viên số: Tích hợp với tông màu thương hiệu doanh nghiệp, tạo hình ảnh và phong cách tương tác nhân vật số thương hiệu độc quyền\n' +
+      '- Nội dung tuyên truyền và đào tạo đại diện vận hành: Đội ngũ chuyên nghiệp phục vụ một kèm một, đại diện tạo, đào tạo và tối ưu hóa nội dung\n' +
+      '- Tùy chỉnh thiết bị hiển thị: Cung cấp các dạng phần cứng đa dạng như kích thước lớn, bán trong suốt, 3D không kính để phù hợp với các kịch bản tiếp thị ngoại tuyến khác nhau\n' +
+      '- Thiết kế tiếp thị AI toàn kịch bản: Thiết kế hoàn chỉnh giải pháp tiếp thị ngoại tuyến AI dựa trên hội chợ, cửa hàng, phòng trưng bày và các kịch bản khác, nâng cấp AI toàn diện không có điểm chết',
       features: [
-        'Gói dịch vụ hàng quý: Giám sát dữ liệu + Tối ưu hóa mô hình + Phản hồi bất thường',
-        'Liên kết chỉ số kinh doanh: Cuộc họp đánh giá hiệu quả hàng tháng',
-        'Chuyển giao kiến thức: Xây dựng khả năng đội ngũ doanh nghiệp'
       ],
       process: [],
       blocks: [
         { title: 'Giám sát dữ liệu', desc: 'Theo dõi liên tục các chỉ số chính' },
-        { title: 'Tối ưu hóa mô hình', desc: 'Nâng cao hiệu suất thuật toán AI' },
-        { title: 'Đánh giá hiệu quả', desc: 'Đánh giá hàng tháng' }
+        { title: 'Tối ưu hóa mô hình', desc: 'Cải thiện hiệu suất thuật toán AI' },
+        { title: 'Tổng kết hiệu quả', desc: 'Đánh giá hàng tháng' }
       ]
     }
   };
@@ -655,15 +711,16 @@ const showServiceDetails = (service: any) => {
 // 获取服务图片
 const getServiceImage = (title: string) => {
   const imageMap = {
-    'AI 应用咨询': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    '定制化 AI 应用开发': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    'AI 技术与业务运营支持': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
-    'AI Consulting': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    'Custom AI Development': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    'AI Tech & Operations Support': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
-    'Tư vấn AI': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
-    'Phát triển AI tùy chỉnh': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
-    'Hỗ trợ kỹ thuật & vận hành AI': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
+    'AI 导购一体机': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    'AI Shopping Assistant All-in-One Kiosk': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    'Gephura 数字员工平台': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
+    '全景定制服务': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
+    'AI Shopping Guide All-in-One Machine': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    'Gephura Digital Employee Platform': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
+    'Comprehensive Customization Services': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg',
+    'Máy bán hàng thông minh AI tích hợp tất cả': 'https://public.readdy.ai/ai/img_res/895858ec25000ae54fb48a166707dad1.jpg',
+    'Nền tảng nhân viên số Gephura': 'https://public.readdy.ai/ai/img_res/b44f60484f923bed581e09f8a46985f8.jpg',
+    'Dịch vụ tùy chỉnh toàn diện': 'https://public.readdy.ai/ai/img_res/d90fd54d67383807ed44365a0e91f9d9.jpg'
   };
   return imageMap[title as keyof typeof imageMap];
 };
@@ -671,15 +728,15 @@ const getServiceImage = (title: string) => {
 // 获取案例图片
 const getCaseImage = (title: string) => {
   const imageMap = {
-    '电商 AI 解决方案': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
-    '医疗 AI 系统': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    '制造业 AI 解决方案': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
-    'E-commerce AI Solution': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
-    'Healthcare AI System': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    'Manufacturing AI Solution': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
-    'Giải pháp AI thương mại điện tử': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
-    'Hệ thống AI y tế': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
-    'Giải pháp AI sản xuất': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
+    '全球展会': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
+    '品牌门店': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
+    '服务大厅': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
+    'Global Exhibitions': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
+    'Brand Stores': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
+    'Service Halls': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg',
+    'Hội chợ toàn cầu': 'https://public.readdy.ai/ai/img_res/f90fbf5082584a96453aefaa7be729af.jpg',
+    'Cửa hàng thương hiệu': 'https://public.readdy.ai/ai/img_res/4addef60744ac87fbd4b8d30a80e2da7.jpg',
+    'Sảnh dịch vụ': 'https://public.readdy.ai/ai/img_res/28d36d62592de6a55f05f9da035482eb.jpg'
   };
   return imageMap[title as keyof typeof imageMap];
 };
