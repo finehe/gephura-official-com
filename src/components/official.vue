@@ -2,7 +2,7 @@
 <template>
   <div class="min-h-screen">
     <!-- 固定导航栏 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 shadow-sm backdrop-blur-sm">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 shadow-sm backdrop-blur-sm">
       <div class="w-full px-6 h-20 flex items-center justify-between">
         <div class="flex items-center">
           <img :src="logoUrl" alt="Gephura" class="h-12 md:h-12 h-10">
@@ -15,32 +15,32 @@
         </div>
         <!-- 桌面端导航 -->
         <div class="hidden md:flex items-center space-x-8">
-          <a v-for="item in navItems" :key="item.id" :class="['hover:text-blue-600 transition-colors cursor-pointer',
-            currentNav === item.id ? 'text-blue-600' : 'text-gray-700']" @click="scrollToSection(item.id)">
+          <a v-for="item in navItems" :key="item.id" :class="['hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer',
+            currentNav === item.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300']" @click="scrollToSection(item.id)">
             {{ i18n[currentLang].nav[item.id] }}
           </a>
           <!-- 语言切换按钮 -->
           <div class="relative">
-            <button @click="toggleLangMenu" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+            <button @click="toggleLangMenu" class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               <i class="fas fa-globe"></i>
               <span>{{ currentLang === 'en' ? 'EN' : currentLang === 'cn' ? '中文' : 'VI' }}</span>
               <i class="fas fa-chevron-down text-xs"></i>
             </button>
             <!-- 语言切换下拉菜单 -->
-            <div v-show="isLangMenuOpen" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2">
-              <button @click="currentLang = 'en'" 
-                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors', 
-                currentLang === 'en' ? 'text-blue-600' : 'text-gray-600']">
+            <div v-show="isLangMenuOpen" class="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2">
+              <button @click="currentLang = 'en'"
+                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors',
+                currentLang === 'en' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300']">
                 English
               </button>
               <button @click="currentLang = 'cn'"
-                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors',
-                currentLang === 'cn' ? 'text-blue-600' : 'text-gray-600']">
+                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors',
+                currentLang === 'cn' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300']">
                 中文
               </button>
               <button @click="currentLang = 'vi'"
-                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors',
-                currentLang === 'vi' ? 'text-blue-600' : 'text-gray-600']">
+                :class="['w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors',
+                currentLang === 'vi' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300']">
                 Tiếng Việt
               </button>
             </div>
@@ -51,31 +51,39 @@
       <div v-show="isMenuOpen" class="md:hidden fixed inset-0 bg-black/50 z-40" @click="isMenuOpen = false">
       </div>
       <div v-show="isMenuOpen"
-        class="md:hidden fixed right-0 top-20 w-64 bg-white shadow-lg rounded-l-xl z-50 transform transition-transform duration-300"
+        class="md:hidden fixed right-0 top-20 w-64 bg-white dark:bg-gray-800 shadow-lg rounded-l-xl z-50 transform transition-transform duration-300"
         :class="isMenuOpen ? 'translate-x-0' : 'translate-x-full'">
         <div class="py-4 px-6 space-y-4">
-          <a v-for="item in navItems" :key="item.id" :class="['block py-2 hover:text-blue-600 transition-colors cursor-pointer',
-            currentNav === item.id ? 'text-blue-600' : 'text-gray-700']" @click="handleMobileNavClick(item.id)">
+          <a v-for="item in navItems" :key="item.id" :class="['block py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer',
+            currentNav === item.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300']" @click="handleMobileNavClick(item.id)">
             {{ i18n[currentLang].nav[item.id] }}
           </a>
-          <!-- 移动端语言切换按钮 -->
+          <!-- 移动端夜间模式切换 -->
           <div class="border-t pt-4 mt-4">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-gray-600 dark:text-gray-300">{{ currentLang === 'en' ? 'Dark Mode' : currentLang === 'cn' ? '夜间模式' : 'Chế độ tối' }}</span>
+              <button @click="toggleDarkMode" class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <i :class="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                <span>{{ isDarkMode ? (currentLang === 'en' ? 'Light' : currentLang === 'cn' ? '日间' : 'Sáng') : (currentLang === 'en' ? 'Dark' : currentLang === 'cn' ? '夜间' : 'Tối') }}</span>
+              </button>
+            </div>
+            <!-- 移动端语言切换按钮 -->
             <div class="flex items-center justify-between">
-              <span class="text-gray-600">{{ currentLang === 'en' ? 'Language' : currentLang === 'cn' ? '语言' : 'Ngôn ngữ' }}</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ currentLang === 'en' ? 'Language' : currentLang === 'cn' ? '语言' : 'Ngôn ngữ' }}</span>
               <div class="flex gap-2">
-                <button @click="currentLang = 'en'" 
-                  :class="['px-3 py-1 rounded-md transition-colors', 
-                  currentLang === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+                <button @click="currentLang = 'en'"
+                  :class="['px-3 py-1 rounded-md transition-colors',
+                  currentLang === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600']">
                   EN
                 </button>
                 <button @click="currentLang = 'cn'"
                   :class="['px-3 py-1 rounded-md transition-colors',
-                  currentLang === 'cn' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+                  currentLang === 'cn' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600']">
                   中文
                 </button>
                 <button @click="currentLang = 'vi'"
                   :class="['px-3 py-1 rounded-md transition-colors',
-                  currentLang === 'vi' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+                  currentLang === 'vi' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600']">
                   VI
                 </button>
               </div>
@@ -111,12 +119,12 @@
       </div> -->
     </div>
     <!-- 关于我们 -->
-    <section id="about" class="py-20 w-full">
+    <section id="about" class="py-20 w-full bg-white dark:bg-gray-900">
       <div class="w-full px-6">
         <div class="flex items-center gap-12">
           <div class="flex-1">
-            <h2 class="text-3xl font-bold mb-6">{{ i18n[currentLang].about.title }}</h2>
-            <p class="text-gray-600 text-lg leading-relaxed text-left whitespace-pre-line">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{{ i18n[currentLang].about.title }}</h2>
+            <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed text-left whitespace-pre-line">
               {{ i18n[currentLang].about.content }}
             </p>
           </div>
@@ -127,40 +135,40 @@
       </div>
     </section>
     <!-- 核心服务 -->
-    <section id="services" class="py-20 bg-gray-50 w-full">
+    <section id="services" class="py-20 bg-gray-50 dark:bg-gray-800 w-full">
       <div class="w-full px-6">
-        <h2 class="text-3xl font-bold text-center mb-16">{{ i18n[currentLang].services.title }}</h2>
+        <h2 class="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">{{ i18n[currentLang].services.title }}</h2>
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
           <div v-for="service in i18n[currentLang].services.items" :key="service.title"
-            class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
+            class="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
             <img :src="getServiceImage(service.title)" :alt="service.title" class="w-full aspect-video object-cover">
             <div class="p-6">
-              <h3 class="text-xl font-semibold mb-4">{{ service.title }}</h3>
-              <p class="text-gray-600 mb-6 min-h-[6rem] line-clamp-5">{{ service.description }}</p>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{{ service.title }}</h3>
+              <p class="text-gray-600 dark:text-gray-300 mb-6 min-h-[6rem] line-clamp-5">{{ service.description }}</p>
               <button @click="showServiceDetails(service)"
-                class="!rounded-button text-blue-600 hover:bg-blue-50 px-6 py-2 border border-blue-600 transition-all whitespace-nowrap">
+                class="!rounded-button text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-600 px-6 py-2 border border-blue-600 dark:border-blue-400 transition-all whitespace-nowrap">
                 {{ i18n[currentLang].services.more }}
               </button>
               <!-- 服务详情弹窗 -->
               <div v-if="showServiceModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                <div class="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+                <div class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
                   <div class="p-8">
                     <div class="flex justify-between items-center mb-8">
-                      <h3 class="text-2xl md:text-3xl font-bold text-gray-900">{{ currentService.title }}</h3>
-                      <button @click="showServiceModal = false" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full">
+                      <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{{ currentService.title }}</h3>
+                      <button @click="showServiceModal = false" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
                         <i class="fas fa-times text-xl"></i>
                       </button>
                     </div>
 
                     <!-- 服务介绍 -->
                     <div class="mb-8">
-                      <div v-html="currentService.content" class="text-gray-700 leading-relaxed space-y-6"></div>
+                      <div v-html="currentService.content" class="text-gray-700 dark:text-gray-300 leading-relaxed space-y-6"></div>
                     </div>
 
 
 
                     <!-- 底部操作区 -->
-                    <div class="mt-8 pt-6 border-t border-gray-200 flex justify-end gap-4">
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-4">
                       <button @click="showServiceModal = false; scrollToSection('contact')"
                         class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         立即咨询
@@ -176,56 +184,56 @@
       </div>
     </section>
     <!-- 行业案例 -->
-    <section id="cases" class="py-20 w-full">
+    <section id="cases" class="py-20 w-full bg-white dark:bg-gray-900">
       <div class="w-full px-6">
-        <h2 class="text-3xl font-bold text-center mb-16">{{ i18n[currentLang].cases.title }}</h2>
+        <h2 class="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">{{ i18n[currentLang].cases.title }}</h2>
         <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
           <div v-for="case_ in i18n[currentLang].cases.items" :key="case_.title"
-            class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
+            class="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
             <img :src="getCaseImage(case_.title)" :alt="case_.title" class="w-full aspect-video object-cover">
             <div class="p-6">
-              <h3 class="text-xl font-semibold mb-4">{{ case_.title }}</h3>
-              <p class="text-gray-600">{{ case_.description }}</p>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{{ case_.title }}</h3>
+              <p class="text-gray-600 dark:text-gray-300">{{ case_.description }}</p>
             </div>
           </div>
         </div>
       </div>
     </section>
     <!-- 联系我们 -->
-    <section id="contact" class="py-20 bg-gray-50 w-full">
+    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-800 w-full">
       <div class="w-full px-6">
-        <h2 class="text-3xl font-bold text-center mb-16">{{ i18n[currentLang].contact.title }}</h2>
+        <h2 class="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">{{ i18n[currentLang].contact.title }}</h2>
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-12">
-            <p class="text-lg text-gray-600 leading-relaxed">
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
               {{ i18n[currentLang].contact.description }}
             </p>
           </div>
           <div class="grid md:grid-cols-3 grid-cols-1 gap-8">
             <!-- 电子邮箱 -->
-            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
-              <i class="fas fa-envelope text-blue-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'Email' : currentLang === 'cn' ? '电子邮箱' : 'Email' }}</span>
-              <a href="mailto:info@gephura.com" class="text-blue-600 hover:text-blue-800 mt-2">info@gephura.com</a>
+            <div class="flex flex-col items-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
+              <i class="fas fa-envelope text-blue-600 dark:text-blue-400 text-2xl mb-4"></i>
+              <span class="text-gray-700 dark:text-gray-300 font-medium">{{ currentLang === 'en' ? 'Email' : currentLang === 'cn' ? '电子邮箱' : 'Email' }}</span>
+              <a href="mailto:info@gephura.com" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mt-2">info@gephura.com</a>
             </div>
 
             <!-- 企业微信二维码 -->
-            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
-              <i class="fas fa-qrcode text-green-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'WeChat Work' : currentLang === 'cn' ? '企业微信' : 'WeChat Work' }}</span>
+            <div class="flex flex-col items-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
+              <i class="fas fa-qrcode text-green-600 dark:text-green-400 text-2xl mb-4"></i>
+              <span class="text-gray-700 dark:text-gray-300 font-medium">{{ currentLang === 'en' ? 'WeChat Work' : currentLang === 'cn' ? '企业微信' : 'WeChat Work' }}</span>
               <div class="mt-4">
                 <img src="https://gephura-web.oss-cn-shanghai.aliyuncs.com/60c8a96d-de9a-4544-b616-d334b632ac34.jpg" :alt="currentLang === 'en' ? 'WeChat Work QR Code' : currentLang === 'cn' ? '企业微信二维码' : 'Mã QR WeChat Work'" class="w-36 h-36 object-contain">
-                <p class="text-gray-500 text-xs mt-2 text-center">{{ currentLang === 'en' ? 'Scan to add' : currentLang === 'cn' ? '扫码添加' : 'Quét để thêm' }}</p>
+                <p class="text-gray-500 dark:text-gray-400 text-xs mt-2 text-center">{{ currentLang === 'en' ? 'Scan to add' : currentLang === 'cn' ? '扫码添加' : 'Quét để thêm' }}</p>
               </div>
             </div>
 
             <!-- 微信公众号二维码 -->
-            <div class="flex flex-col items-center p-6 bg-white rounded-xl shadow-sm">
-              <i class="fas fa-qrcode text-purple-600 text-2xl mb-4"></i>
-              <span class="text-gray-700 font-medium">{{ currentLang === 'en' ? 'WeChat Official' : currentLang === 'cn' ? '微信公众号' : 'WeChat Official' }}</span>
+            <div class="flex flex-col items-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
+              <i class="fas fa-qrcode text-purple-600 dark:text-purple-400 text-2xl mb-4"></i>
+              <span class="text-gray-700 dark:text-gray-300 font-medium">{{ currentLang === 'en' ? 'WeChat Official' : currentLang === 'cn' ? '微信公众号' : 'WeChat Official' }}</span>
               <div class="mt-4">
                 <img src="https://gephura-web.oss-cn-shanghai.aliyuncs.com/ee2330ff-7a6c-435d-bc21-82422e8914f9.jpg" :alt="currentLang === 'en' ? 'WeChat Official QR Code' : currentLang === 'cn' ? '微信公众号二维码' : 'Mã QR WeChat Official'" class="w-36 h-36 object-contain">
-                <p class="text-gray-500 text-xs mt-2 text-center">{{ currentLang === 'en' ? 'Scan to follow' : currentLang === 'cn' ? '扫码关注' : 'Quét để theo dõi' }}</p>
+                <p class="text-gray-500 dark:text-gray-400 text-xs mt-2 text-center">{{ currentLang === 'en' ? 'Scan to follow' : currentLang === 'cn' ? '扫码关注' : 'Quét để theo dõi' }}</p>
               </div>
             </div>
           </div>
@@ -234,15 +242,15 @@
       </div>
     </section>
     <!-- Footer -->
-    <footer class="bg-gray-50 py-8 w-full">
-      <div class="w-full px-6 text-center text-gray-500 text-sm">
+    <footer class="bg-gray-50 dark:bg-gray-800 py-8 w-full">
+      <div class="w-full px-6 text-center text-gray-500 dark:text-gray-400 text-sm">
         <p>© 2025 Gephura. All rights reserved.</p>
         <p v-if="currentLang === 'cn'" class="mt-2">沪ICP备2025115766号-2</p>
       </div>
     </footer>
     <!-- 返回顶部按钮 -->
     <button v-show="showBackTop" @click="scrollToTop"
-      class="!rounded-button fixed bottom-8 right-8 bg-blue-600 text-white w-12 h-12 flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors whitespace-nowrap">
+      class="!rounded-button fixed bottom-8 right-8 bg-blue-600 dark:bg-blue-500 text-white w-12 h-12 flex items-center justify-center shadow-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors whitespace-nowrap">
       <i class="fas fa-arrow-up"></i>
     </button>
   </div>
@@ -262,6 +270,23 @@ const currentService = ref({
 const showBackTop = ref(false);
 type Language = 'en' | 'cn' | 'vi';
 const currentLang = ref<Language>('cn');
+
+// 夜间模式状态
+const isDarkMode = ref(false);
+
+// 切换夜间模式
+const toggleDarkMode = () => {
+  isDarkMode.value = !isDarkMode.value;
+  if (isDarkMode.value) {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add('dark-mode');
+    document.documentElement.classList.remove('light-mode');
+  } else {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.remove('dark-mode');
+    document.documentElement.classList.add('light-mode');
+  }
+};
 
 // 视频播放控制
 const handleVideoError = () => {
@@ -496,45 +521,45 @@ const showServiceDetails = (service: any) => {
     'AI 导购一体机': {
       title: 'AI 导购一体机',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'AI导购数字人一体机，用<strong class="text-blue-600">靓丽灵动的数字人形象</strong>吸引客户驻足，用<strong class="text-blue-600">多语种自然对话</strong>的数字人讲解，结合产品多模态展示打动客户，用定制化的产品知识库和话术实现客户双向深度沟通，并通过主动数据分析掌握客户偏好与购买意向。' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'AI导购数字人一体机，用<strong class="text-blue-600 dark:text-blue-400">靓丽灵动的数字人形象</strong>吸引客户驻足，用<strong class="text-blue-600 dark:text-blue-400">多语种自然对话</strong>的数字人讲解，结合产品多模态展示打动客户，用定制化的产品知识库和话术实现客户双向深度沟通，并通过主动数据分析掌握客户偏好与购买意向。' +
         '</p>' +
 
-        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
-          '<h4 class="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">' +
-            '<i class="fas fa-lightbulb text-blue-600"></i>' +
+        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
+          '<h4 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-4 flex items-center gap-2">' +
+            '<i class="fas fa-lightbulb text-blue-600 dark:text-blue-400"></i>' +
             '核心优势' +
           '</h4>' +
           '<div class="space-y-4">' +
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">线下AI多模态体验</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">将传统平面宣传与人工讲解升级为AI多模态智能交互，整合产品图文展示与数字人讲解，实现多语种自然对话的双向客户沟通。</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">线下AI多模态体验</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">将传统平面宣传与人工讲解升级为AI多模态智能交互，整合产品图文展示与数字人讲解，实现多语种自然对话的双向客户沟通。</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">闭环式AI线下营销流程</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">从<strong>"吸引-互动-留资-分析"</strong>全流程由AI驱动完成。系统自动识别客户兴趣点、行为路径引导用户留资，数据分析形成营销数据闭环，助力精准跟进与持续优化。</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">闭环式AI线下营销流程</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">从<strong>"吸引-互动-留资-分析"</strong>全流程由AI驱动完成。系统自动识别客户兴趣点、行为路径引导用户留资，数据分析形成营销数据闭环，助力精准跟进与持续优化。</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">软硬一体，全场景交付</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">软硬件深度集成设计，一台设备即完成客户接待、内容展示、语音互动、客户留资等全流程，真正实现<strong>"真实世界的AI即插即用"</strong>。适配展会、展厅、门店等多种营销场景。</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">软硬一体，全场景交付</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">软硬件深度集成设计，一台设备即完成客户接待、内容展示、语音互动、客户留资等全流程，真正实现<strong>"真实世界的AI即插即用"</strong>。适配展会、展厅、门店等多种营销场景。</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">极简训练，快速上岗</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">后台系统以<strong>"低门槛、高智能"</strong>为设计理念，内置AI辅助训练模块。企业只需上传产品资料，系统即可自动分析学习，生成产品问答库与数字人介绍内容，无额外使用成本。</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">极简训练，快速上岗</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">后台系统以<strong>"低门槛、高智能"</strong>为设计理念，内置AI辅助训练模块。企业只需上传产品资料，系统即可自动分析学习，生成产品问答库与数字人介绍内容，无额外使用成本。</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -547,45 +572,45 @@ const showServiceDetails = (service: any) => {
     'AI Shopping Guide All-in-One Machine': {
       title: 'AI Shopping Guide All-in-One Machine',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'AI shopping guide digital human all-in-one machine uses <strong class="text-blue-600">beautiful and dynamic digital human images</strong> to attract customers, uses <strong class="text-blue-600">multi-language natural dialogue</strong> digital human explanations to impress customers, combines customized product knowledge base and scripts to achieve two-way in-depth customer communication, and masters customer preferences and purchase intentions through active data analysis.' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'AI shopping guide digital human all-in-one machine uses <strong class="text-blue-600 dark:text-blue-400">beautiful and dynamic digital human images</strong> to attract customers, uses <strong class="text-blue-600 dark:text-blue-400">multi-language natural dialogue</strong> digital human explanations to impress customers, combines customized product knowledge base and scripts to achieve two-way in-depth customer communication, and masters customer preferences and purchase intentions through active data analysis.' +
         '</p>' +
 
-        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
-          '<h4 class="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">' +
-            '<i class="fas fa-lightbulb text-blue-600"></i>' +
+        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
+          '<h4 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-4 flex items-center gap-2">' +
+            '<i class="fas fa-lightbulb text-blue-600 dark:text-blue-400"></i>' +
             'Key Advantages' +
           '</h4>' +
           '<div class="space-y-4">' +
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Offline AI Multimodal Experience</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">Upgrade traditional flat promotions and manual explanations to AI multimodal intelligent interaction, integrating product graphic display with digital human explanation, achieving multi-language natural dialogue for two-way customer communication.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Offline AI Multimodal Experience</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Upgrade traditional flat promotions and manual explanations to AI multimodal intelligent interaction, integrating product graphic display with digital human explanation, achieving multi-language natural dialogue for two-way customer communication.</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Closed-loop AI Offline Marketing Process</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">The entire process from <strong>"attract-interact-collect-analyze"</strong> is AI-driven. The system automatically identifies customer interest points, guides user behavior paths, enables users to leave information, and forms a data closed loop for marketing, assisting in precise follow-up and continuous optimization.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Closed-loop AI Offline Marketing Process</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">The entire process from <strong>"attract-interact-collect-analyze"</strong> is AI-driven. The system automatically identifies customer interest points, guides user behavior paths, enables users to leave information, and forms a data closed loop for marketing, assisting in precise follow-up and continuous optimization.</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Software-Hardware Integration, All-Scenario Delivery</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">Deep integration design of software and hardware. One device completes the entire process of customer reception, content display, voice interaction, and customer data collection, truly achieving <strong>"plug-and-play AI in the real world"</strong>. Adaptable to exhibition halls, showrooms, stores, and other marketing scenarios.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Software-Hardware Integration, All-Scenario Delivery</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Deep integration design of software and hardware. One device completes the entire process of customer reception, content display, voice interaction, and customer data collection, truly achieving <strong>"plug-and-play AI in the real world"</strong>. Adaptable to exhibition halls, showrooms, stores, and other marketing scenarios.</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Simple Training, Quick Onboarding</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">The backend system takes <strong>"low-threshold, high-intelligence"</strong> as the design concept, with built-in AI-assisted training modules. Enterprises only need to upload product materials, and the system can automatically analyze and learn, generate product Q&A databases and digital human introduction content, with no additional usage costs.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Simple Training, Quick Onboarding</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">The backend system takes <strong>"low-threshold, high-intelligence"</strong> as the design concept, with built-in AI-assisted training modules. Enterprises only need to upload product materials, and the system can automatically analyze and learn, generate product Q&A databases and digital human introduction content, with no additional usage costs.</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -598,45 +623,45 @@ const showServiceDetails = (service: any) => {
     'Máy bán hàng thông minh AI tích hợp tất cả': {
       title: 'Máy bán hàng thông minh AI tích hợp tất cả',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'Máy bán hàng hướng dẫn AI nhân vật số tích hợp tất cả sử dụng <strong class="text-blue-600">hình ảnh nhân vật số đẹp đẽ và năng động</strong> để thu hút khách hàng dừng lại, sử dụng <strong class="text-blue-600">giải thích nhân vật số đối thoại tự nhiên đa ngôn ngữ</strong> để gây ấn tượng với khách hàng, kết hợp cơ sở kiến thức sản phẩm tùy chỉnh và kịch bản để đạt được giao tiếp sâu hai chiều với khách hàng, và nắm vững sở thích và ý định mua hàng của khách hàng thông qua phân tích dữ liệu chủ động.' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'Máy bán hàng hướng dẫn AI nhân vật số tích hợp tất cả sử dụng <strong class="text-blue-600 dark:text-blue-400">hình ảnh nhân vật số đẹp đẽ và năng động</strong> để thu hút khách hàng dừng lại, sử dụng <strong class="text-blue-600 dark:text-blue-400">giải thích nhân vật số đối thoại tự nhiên đa ngôn ngữ</strong> để gây ấn tượng với khách hàng, kết hợp cơ sở kiến thức sản phẩm tùy chỉnh và kịch bản để đạt được giao tiếp sâu hai chiều với khách hàng, và nắm vững sở thích và ý định mua hàng của khách hàng thông qua phân tích dữ liệu chủ động.' +
         '</p>' +
 
-        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
-          '<h4 class="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">' +
-            '<i class="fas fa-lightbulb text-blue-600"></i>' +
+        '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
+          '<h4 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-4 flex items-center gap-2">' +
+            '<i class="fas fa-lightbulb text-blue-600 dark:text-blue-400"></i>' +
             'Ưu thế cốt lõi' +
           '</h4>' +
           '<div class="space-y-4">' +
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">1</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Trải nghiệm đa phương thức AI ngoại tuyến</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">Nâng cấp quảng cáo phẳng truyền thống và giải thích thủ công thành tương tác thông minh đa phương thức AI, tích hợp hiển thị đồ họa sản phẩm với giải thích nhân vật số, đạt được giao tiếp hai chiều tự nhiên đa ngôn ngữ với khách hàng.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Trải nghiệm đa phương thức AI ngoại tuyến</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Nâng cấp quảng cáo phẳng truyền thống và giải thích thủ công thành tương tác thông minh đa phương thức AI, tích hợp hiển thị đồ họa sản phẩm với giải thích nhân vật số, đạt được giao tiếp hai chiều tự nhiên đa ngôn ngữ với khách hàng.</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">2</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Quy trình tiếp thị ngoại tuyến AI khép kín</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">Toàn bộ quy trình từ <strong>"thu hút-tương tác-thu thập-phân tích"</strong> được điều khiển bởi AI. Hệ thống tự động xác định điểm quan tâm của khách hàng, hướng dẫn đường dẫn hành vi người dùng, cho phép người dùng để lại thông tin, và hình thành vòng khép kín dữ liệu tiếp thị, hỗ trợ theo dõi chính xác và tối ưu hóa liên tục.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Quy trình tiếp thị ngoại tuyến AI khép kín</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Toàn bộ quy trình từ <strong>"thu hút-tương tác-thu thập-phân tích"</strong> được điều khiển bởi AI. Hệ thống tự động xác định điểm quan tâm của khách hàng, hướng dẫn đường dẫn hành vi người dùng, cho phép người dùng để lại thông tin, và hình thành vòng khép kín dữ liệu tiếp thị, hỗ trợ theo dõi chính xác và tối ưu hóa liên tục.</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">3</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Tích hợp phần mềm-phần cứng, giao hàng tất cả kịch bản</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">Thiết kế tích hợp sâu phần mềm và phần cứng. Một thiết bị hoàn thành toàn bộ quy trình tiếp đón khách hàng, hiển thị nội dung, tương tác giọng nói và thu thập dữ liệu khách hàng, thực sự đạt được <strong>"AI cắm là chạy trong thế giới thực"</strong>. Phù hợp với hội chợ, phòng trưng bày, cửa hàng và các kịch bản tiếp thị khác.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Tích hợp phần mềm-phần cứng, giao hàng tất cả kịch bản</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Thiết kế tích hợp sâu phần mềm và phần cứng. Một thiết bị hoàn thành toàn bộ quy trình tiếp đón khách hàng, hiển thị nội dung, tương tác giọng nói và thu thập dữ liệu khách hàng, thực sự đạt được <strong>"AI cắm là chạy trong thế giới thực"</strong>. Phù hợp với hội chợ, phòng trưng bày, cửa hàng và các kịch bản tiếp thị khác.</p>' +
               '</div>' +
             '</div>' +
 
             '<div class="flex items-start gap-3">' +
-              '<span class="bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
+              '<span class="bg-blue-600 dark:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full min-w-[24px] text-center">4</span>' +
               '<div>' +
-                '<h5 class="font-semibold text-gray-900">Đào tạo đơn giản, onboard nhanh chóng</h5>' +
-                '<p class="text-gray-600 text-sm mt-1">Hệ thống backend lấy <strong>"ngưỡng thấp, trí thông minh cao"</strong> làm khái niệm thiết kế, với các mô-đun hỗ trợ đào tạo AI tích hợp. Doanh nghiệp chỉ cần tải lên tài liệu sản phẩm, hệ thống có thể tự động phân tích và học, tạo cơ sở dữ liệu Q&A sản phẩm và nội dung giới thiệu nhân vật số, không có chi phí sử dụng bổ sung.</p>' +
+                '<h5 class="font-semibold text-gray-900 dark:text-white">Đào tạo đơn giản, onboard nhanh chóng</h5>' +
+                '<p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Hệ thống backend lấy <strong>"ngưỡng thấp, trí thông minh cao"</strong> làm khái niệm thiết kế, với các mô-đun hỗ trợ đào tạo AI tích hợp. Doanh nghiệp chỉ cần tải lên tài liệu sản phẩm, hệ thống có thể tự động phân tích và học, tạo cơ sở dữ liệu Q&A sản phẩm và nội dung giới thiệu nhân vật số, không có chi phí sử dụng bổ sung.</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -649,97 +674,97 @@ const showServiceDetails = (service: any) => {
     'Gephura 数字员工平台': {
       title: 'Gephura 数字员工平台',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          '只需<strong class="text-blue-600">三步</strong>，您的AI数字员工即可<strong class="text-blue-600">快速上岗</strong>：' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          '只需<strong class="text-blue-600 dark:text-blue-400">三步</strong>，您的AI数字员工即可<strong class="text-blue-600 dark:text-blue-400">快速上岗</strong>：' +
         '</p>' +
 
         '<div class="space-y-6">' +
-          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-green-500 dark:border-green-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
+              '<div class="w-12 h-12 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-green-800 mb-3">便捷创建产品库</h4>' +
+                '<h4 class="text-xl font-bold text-green-800 dark:text-green-200 mb-3">便捷创建产品库</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">拖拽上传产品资料，AI自动完成<strong>信息解析与问答库生成</strong></span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">拖拽上传产品资料，AI自动完成<strong>信息解析与问答库生成</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">支持<strong>自动多语种翻译</strong>与内容优化</span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">支持<strong>自动多语种翻译</strong>与内容优化</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">多模态展示产品（图文、视频、<strong>3D模型</strong>等）</span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">多模态展示产品（图文、视频、<strong>3D模型</strong>等）</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
+              '<div class="w-12 h-12 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-blue-800 mb-3">聘用并培训数字员工</h4>' +
+                '<h4 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-3">聘用并培训数字员工</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">平台提供<strong>多样化数字员工形象</strong>（不同风格、性格、表现力）</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">平台提供<strong>多样化数字员工形象</strong>（不同风格、性格、表现力）</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">企业可选择符合品牌调性的数字人，<strong>30分钟</strong>即可完成培训上岗</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">企业可选择符合品牌调性的数字人，<strong>30分钟</strong>即可完成培训上岗</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">具备<strong>循环学习能力</strong>，越用越智能</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">具备<strong>循环学习能力</strong>，越用越智能</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-purple-500 dark:border-purple-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
+              '<div class="w-12 h-12 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-purple-800 mb-3">个性化场景设定，开启营销活动</h4>' +
+                '<h4 class="text-xl font-bold text-purple-800 dark:text-purple-200 mb-3">个性化场景设定，开启营销活动</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">支持展会、门店、展厅等<strong>多种应用场景</strong></span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">支持展会、门店、展厅等<strong>多种应用场景</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">自定义产品展示与数字人对话行为风格</span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">自定义产品展示与数字人对话行为风格</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">打造<strong>高度贴合场景</strong>的互动体验</span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">打造<strong>高度贴合场景</strong>的互动体验</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-orange-500 dark:border-orange-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
+              '<div class="w-12 h-12 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-orange-800 mb-3">活动复盘，销售转化</h4>' +
+                '<h4 class="text-xl font-bold text-orange-800 dark:text-orange-200 mb-3">活动复盘，销售转化</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">详细分析每位客户的<strong>互动行为与意向</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">详细分析每位客户的<strong>互动行为与意向</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">数据直连CRM，<strong>精准线索转化</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">数据直连CRM，<strong>精准线索转化</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">助力企业实现<strong>高效销售增长</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">助力企业实现<strong>高效销售增长</strong></span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
@@ -754,97 +779,97 @@ const showServiceDetails = (service: any) => {
     'Gephura Digital Employee Platform': {
       title: 'Gephura Digital Employee Platform',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'Just <strong class="text-blue-600">three steps</strong> for your AI digital employee to go <strong class="text-blue-600">online quickly</strong>:' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'Just <strong class="text-blue-600 dark:text-blue-400">three steps</strong> for your AI digital employee to go <strong class="text-blue-600 dark:text-blue-400">online quickly</strong>:' +
         '</p>' +
 
         '<div class="space-y-6">' +
-          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-green-500 dark:border-green-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
+              '<div class="w-12 h-12 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-green-800 mb-3">Convenient Product Library Creation</h4>' +
+                '<h4 class="text-xl font-bold text-green-800 dark:text-green-200 mb-3">Convenient Product Library Creation</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Drag and drop to upload product materials, AI automatically completes <strong>information parsing and Q&A database generation</strong></span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Drag and drop to upload product materials, AI automatically completes <strong>information parsing and Q&A database generation</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Support <strong>automatic multi-language translation</strong> and content optimization</span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Support <strong>automatic multi-language translation</strong> and content optimization</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Multi-modal product display (graphics, videos, <strong>3D models</strong>, etc.)</span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Multi-modal product display (graphics, videos, <strong>3D models</strong>, etc.)</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
+              '<div class="w-12 h-12 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-blue-800 mb-3">Hire and Train Digital Employees</h4>' +
+                '<h4 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-3">Hire and Train Digital Employees</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">The platform provides <strong>diverse digital employee images</strong> (different styles, personalities, expressiveness)</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">The platform provides <strong>diverse digital employee images</strong> (different styles, personalities, expressiveness)</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Enterprises can choose digital humans that match brand tonality, <strong>30 minutes</strong> to complete training and onboarding</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Enterprises can choose digital humans that match brand tonality, <strong>30 minutes</strong> to complete training and onboarding</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Possess <strong>cyclic learning ability</strong>, gets smarter the more it\'s used</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Possess <strong>cyclic learning ability</strong>, gets smarter the more it\'s used</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-purple-500 dark:border-purple-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
+              '<div class="w-12 h-12 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-purple-800 mb-3">Personalized Scenario Settings, Launch Marketing Activities</h4>' +
+                '<h4 class="text-xl font-bold text-purple-800 dark:text-purple-200 mb-3">Personalized Scenario Settings, Launch Marketing Activities</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Supports exhibition halls, stores, showrooms and <strong>various application scenarios</strong></span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Supports exhibition halls, stores, showrooms and <strong>various application scenarios</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Customize product display and digital human dialogue behavior style</span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Customize product display and digital human dialogue behavior style</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Create <strong>highly fitting interactive experiences</strong> for scenarios</span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Create <strong>highly fitting interactive experiences</strong> for scenarios</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-orange-500 dark:border-orange-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
+              '<div class="w-12 h-12 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-orange-800 mb-3">Activity Review, Sales Conversion</h4>' +
+                '<h4 class="text-xl font-bold text-orange-800 dark:text-orange-200 mb-3">Activity Review, Sales Conversion</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Detailed analysis of each customer\'s <strong>interactive behavior and intentions</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Detailed analysis of each customer\'s <strong>interactive behavior and intentions</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Data directly connected to CRM, <strong>precise lead conversion</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Data directly connected to CRM, <strong>precise lead conversion</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Assist enterprises in achieving <strong>efficient sales growth</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Assist enterprises in achieving <strong>efficient sales growth</strong></span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
@@ -859,97 +884,97 @@ const showServiceDetails = (service: any) => {
     'Nền tảng nhân viên số Gephura': {
       title: 'Nền tảng nhân viên số Gephura',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'Chỉ cần <strong class="text-blue-600">ba bước</strong>, nhân viên số AI của bạn có thể <strong class="text-blue-600">nhanh chóng đi vào hoạt động</strong>:' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'Chỉ cần <strong class="text-blue-600 dark:text-blue-400">ba bước</strong>, nhân viên số AI của bạn có thể <strong class="text-blue-600 dark:text-blue-400">nhanh chóng đi vào hoạt động</strong>:' +
         '</p>' +
 
         '<div class="space-y-6">' +
-          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-green-500 dark:border-green-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
+              '<div class="w-12 h-12 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-green-800 mb-3">Tạo thư viện sản phẩm tiện lợi</h4>' +
+                '<h4 class="text-xl font-bold text-green-800 dark:text-green-200 mb-3">Tạo thư viện sản phẩm tiện lợi</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Kéo thả tải lên tài liệu sản phẩm, AI tự động hoàn thành <strong>phân tích thông tin và tạo cơ sở dữ liệu Q&A</strong></span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Kéo thả tải lên tài liệu sản phẩm, AI tự động hoàn thành <strong>phân tích thông tin và tạo cơ sở dữ liệu Q&A</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Hỗ trợ <strong>dịch tự động đa ngôn ngữ</strong> và tối ưu hóa nội dung</span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Hỗ trợ <strong>dịch tự động đa ngôn ngữ</strong> và tối ưu hóa nội dung</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-green-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Hiển thị sản phẩm đa phương thức (đồ họa, video, <strong>mô hình 3D</strong>, v.v.)</span>' +
+                    '<i class="fas fa-check text-green-600 dark:text-green-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Hiển thị sản phẩm đa phương thức (đồ họa, video, <strong>mô hình 3D</strong>, v.v.)</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
+              '<div class="w-12 h-12 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-blue-800 mb-3">Tuyển dụng và đào tạo nhân viên số</h4>' +
+                '<h4 class="text-xl font-bold text-blue-800 dark:text-blue-200 mb-3">Tuyển dụng và đào tạo nhân viên số</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Nền tảng cung cấp <strong>hình ảnh nhân viên số đa dạng</strong> (kiểu dáng, tính cách, biểu đạt khác nhau)</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Nền tảng cung cấp <strong>hình ảnh nhân viên số đa dạng</strong> (kiểu dáng, tính cách, biểu đạt khác nhau)</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Doanh nghiệp có thể chọn nhân vật số phù hợp với tông màu thương hiệu, <strong>30 phút</strong> hoàn thành đào tạo và onboard</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Doanh nghiệp có thể chọn nhân vật số phù hợp với tông màu thương hiệu, <strong>30 phút</strong> hoàn thành đào tạo và onboard</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-blue-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Sở hữu <strong>khả năng học tập tuần hoàn</strong>, càng dùng càng thông minh</span>' +
+                    '<i class="fas fa-check text-blue-600 dark:text-blue-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Sở hữu <strong>khả năng học tập tuần hoàn</strong>, càng dùng càng thông minh</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-purple-500 dark:border-purple-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
+              '<div class="w-12 h-12 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-purple-800 mb-3">Thiết lập kịch bản cá nhân hóa, khởi động hoạt động tiếp thị</h4>' +
+                '<h4 class="text-xl font-bold text-purple-800 dark:text-purple-200 mb-3">Thiết lập kịch bản cá nhân hóa, khởi động hoạt động tiếp thị</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Hỗ trợ hội chợ, cửa hàng, phòng trưng bày và <strong>các kịch bản ứng dụng khác</strong></span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Hỗ trợ hội chợ, cửa hàng, phòng trưng bày và <strong>các kịch bản ứng dụng khác</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Tùy chỉnh hiển thị sản phẩm và phong cách hành vi đối thoại nhân vật số</span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Tùy chỉnh hiển thị sản phẩm và phong cách hành vi đối thoại nhân vật số</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-purple-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Tạo <strong>trải nghiệm tương tác phù hợp cao</strong> với kịch bản</span>' +
+                    '<i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Tạo <strong>trải nghiệm tương tác phù hợp cao</strong> với kịch bản</span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-orange-500 dark:border-orange-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
+              '<div class="w-12 h-12 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-xl font-bold text-orange-800 mb-3">Tổng kết hoạt động, chuyển đổi bán hàng</h4>' +
+                '<h4 class="text-xl font-bold text-orange-800 dark:text-orange-200 mb-3">Tổng kết hoạt động, chuyển đổi bán hàng</h4>' +
                 '<div class="space-y-2">' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Phân tích chi tiết <strong>hành vi tương tác và ý định</strong> của từng khách hàng</span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Phân tích chi tiết <strong>hành vi tương tác và ý định</strong> của từng khách hàng</span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Dữ liệu kết nối trực tiếp với CRM, <strong>chuyển đổi lead chính xác</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Dữ liệu kết nối trực tiếp với CRM, <strong>chuyển đổi lead chính xác</strong></span>' +
                   '</div>' +
                   '<div class="flex items-start gap-2">' +
-                    '<i class="fas fa-check text-orange-600 mt-1"></i>' +
-                    '<span class="text-gray-700">Hỗ trợ doanh nghiệp đạt được <strong>tăng trưởng bán hàng hiệu quả</strong></span>' +
+                    '<i class="fas fa-check text-orange-600 dark:text-orange-400 mt-1"></i>' +
+                    '<span class="text-gray-700 dark:text-gray-300">Hỗ trợ doanh nghiệp đạt được <strong>tăng trưởng bán hàng hiệu quả</strong></span>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
@@ -964,81 +989,81 @@ const showServiceDetails = (service: any) => {
     '全景定制服务': {
       title: '全景定制服务',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          '数字化展示不同的产品，不同的企业，需要<strong class="text-blue-600">更加个性化的定制方案</strong>：' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          '数字化展示不同的产品，不同的企业，需要<strong class="text-blue-600 dark:text-blue-400">更加个性化的定制方案</strong>：' +
         '</p>' +
 
         '<div class="grid md:grid-cols-2 gap-6">' +
-          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-user-tie"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-blue-800 mb-2">数字员工定制</h4>' +
-                '<p class="text-gray-700 text-sm">结合企业品牌调性，打造<strong>专属品牌数字人形象</strong>与互动风格</p>' +
+                '<h4 class="text-lg font-bold text-blue-800 dark:text-blue-200 mb-2">数字员工定制</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">结合企业品牌调性，打造<strong>专属品牌数字人形象</strong>与互动风格</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-green-500 dark:border-green-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-bullhorn"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-green-800 mb-2">宣传内容与训练代运营</h4>' +
-                '<p class="text-gray-700 text-sm">专业团队<strong>一对一服务</strong>，代为生成、训练与优化内容</p>' +
+                '<h4 class="text-lg font-bold text-green-800 dark:text-green-200 mb-2">宣传内容与训练代运营</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">专业团队<strong>一对一服务</strong>，代为生成、训练与优化内容</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-purple-500 dark:border-purple-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-tv"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-purple-800 mb-2">展示设备定制</h4>' +
-                '<p class="text-gray-700 text-sm">提供<strong>大尺寸、半透明、裸眼3D</strong>等多样化硬件形态，匹配不同线下营销场景</p>' +
+                '<h4 class="text-lg font-bold text-purple-800 dark:text-purple-200 mb-2">展示设备定制</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">提供<strong>大尺寸、半透明、裸眼3D</strong>等多样化硬件形态，匹配不同线下营销场景</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-orange-500 dark:border-orange-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-draw-polygon"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-orange-800 mb-2">全场景AI营销设计</h4>' +
-                '<p class="text-gray-700 text-sm">根据展会、门店、展厅等场景，完整设计AI线下营销方案，<strong>无死角全面AI升级</strong></p>' +
+                '<h4 class="text-lg font-bold text-orange-800 dark:text-orange-200 mb-2">全场景AI营销设计</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">根据展会、门店、展厅等场景，完整设计AI线下营销方案，<strong>无死角全面AI升级</strong></p>' +
               '</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
 
-        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 p-6 rounded-xl border border-gray-200">' +
-          '<h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">' +
-            '<i class="fas fa-cogs text-gray-600"></i>' +
+        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border border-gray-200 dark:border-gray-500">' +
+          '<h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">' +
+            '<i class="fas fa-cogs text-gray-600 dark:text-gray-400"></i>' +
             '定制服务流程' +
           '</h4>' +
           '<div class="grid md:grid-cols-4 gap-4">' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
-              '<p class="text-sm font-medium text-gray-700">需求分析</p>' +
+              '<div class="w-8 h-8 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">需求分析</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
-              '<p class="text-sm font-medium text-gray-700">方案设计</p>' +
+              '<div class="w-8 h-8 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">方案设计</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
-              '<p class="text-sm font-medium text-gray-700">定制开发</p>' +
+              '<div class="w-8 h-8 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">定制开发</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
-              '<p class="text-sm font-medium text-gray-700">部署上线</p>' +
+              '<div class="w-8 h-8 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">部署上线</p>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -1050,81 +1075,81 @@ const showServiceDetails = (service: any) => {
     'Comprehensive Customization Services': {
       title: 'Comprehensive Customization Services',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'Different products and different enterprises need <strong class="text-blue-600">more personalized customized solutions</strong>:' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'Different products and different enterprises need <strong class="text-blue-600 dark:text-blue-400">more personalized customized solutions</strong>:' +
         '</p>' +
 
         '<div class="grid md:grid-cols-2 gap-6">' +
-          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-user-tie"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-blue-800 mb-2">Digital Employee Customization</h4>' +
-                '<p class="text-gray-700 text-sm">Integrate with enterprise brand tonality to create <strong>exclusive brand digital human images</strong> and interactive styles</p>' +
+                '<h4 class="text-lg font-bold text-blue-800 dark:text-blue-200 mb-2">Digital Employee Customization</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Integrate with enterprise brand tonality to create <strong>exclusive brand digital human images</strong> and interactive styles</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-green-500 dark:border-green-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-bullhorn"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-green-800 mb-2">Content & Training Outsourcing</h4>' +
-                '<p class="text-gray-700 text-sm">Professional team <strong>one-on-one service</strong>, help generate, train and optimize content</p>' +
+                '<h4 class="text-lg font-bold text-green-800 dark:text-green-200 mb-2">Content & Training Outsourcing</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Professional team <strong>one-on-one service</strong>, help generate, train and optimize content</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-purple-500 dark:border-purple-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-tv"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-purple-800 mb-2">Display Device Customization</h4>' +
-                '<p class="text-gray-700 text-sm">Provide <strong>large-size, semi-transparent, naked-eye 3D</strong> and other diversified hardware forms to match different offline marketing scenarios</p>' +
+                '<h4 class="text-lg font-bold text-purple-800 dark:text-purple-200 mb-2">Display Device Customization</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Provide <strong>large-size, semi-transparent, naked-eye 3D</strong> and other diversified hardware forms to match different offline marketing scenarios</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-orange-500 dark:border-orange-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-draw-polygon"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-orange-800 mb-2">All-Scenario AI Marketing Design</h4>' +
-                '<p class="text-gray-700 text-sm">Design complete AI offline marketing solutions based on exhibitions, stores, showrooms and other scenarios, <strong>comprehensive AI upgrades without dead ends</strong></p>' +
+                '<h4 class="text-lg font-bold text-orange-800 dark:text-orange-200 mb-2">All-Scenario AI Marketing Design</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Design complete AI offline marketing solutions based on exhibitions, stores, showrooms and other scenarios, <strong>comprehensive AI upgrades without dead ends</strong></p>' +
               '</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
 
-        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 p-6 rounded-xl border border-gray-200">' +
-          '<h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">' +
-            '<i class="fas fa-cogs text-gray-600"></i>' +
+        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border border-gray-200 dark:border-gray-500">' +
+          '<h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">' +
+            '<i class="fas fa-cogs text-gray-600 dark:text-gray-400"></i>' +
             'Customization Service Process' +
           '</h4>' +
           '<div class="grid md:grid-cols-4 gap-4">' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
-              '<p class="text-sm font-medium text-gray-700">Requirements Analysis</p>' +
+              '<div class="w-8 h-8 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Requirements Analysis</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
-              '<p class="text-sm font-medium text-gray-700">Solution Design</p>' +
+              '<div class="w-8 h-8 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Solution Design</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
-              '<p class="text-sm font-medium text-gray-700">Custom Development</p>' +
+              '<div class="w-8 h-8 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Custom Development</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
-              '<p class="text-sm font-medium text-gray-700">Deployment & Launch</p>' +
+              '<div class="w-8 h-8 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Deployment & Launch</p>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -1136,81 +1161,81 @@ const showServiceDetails = (service: any) => {
     'Dịch vụ tùy chỉnh toàn diện': {
       title: 'Dịch vụ tùy chỉnh toàn diện',
       content: '<div class="space-y-6">' +
-        '<p class="text-lg font-medium text-gray-800 leading-relaxed">' +
-          'Trưng bày số hóa các sản phẩm khác nhau, các doanh nghiệp khác nhau, cần <strong class="text-blue-600">các giải pháp tùy chỉnh cá nhân hóa hơn</strong>:' +
+        '<p class="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed">' +
+          'Trưng bày số hóa các sản phẩm khác nhau, các doanh nghiệp khác nhau, cần <strong class="text-blue-600 dark:text-blue-400">các giải pháp tùy chỉnh cá nhân hóa hơn</strong>:' +
         '</p>' +
 
         '<div class="grid md:grid-cols-2 gap-6">' +
-          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-l-4 border-blue-500">' +
+          '<div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-blue-500 dark:border-blue-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-user-tie"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-blue-800 mb-2">Tùy chỉnh nhân viên số</h4>' +
-                '<p class="text-gray-700 text-sm">Tích hợp với tông màu thương hiệu doanh nghiệp, tạo <strong>hình ảnh và phong cách tương tác nhân vật số thương hiệu độc quyền</strong></p>' +
+                '<h4 class="text-lg font-bold text-blue-800 dark:text-blue-200 mb-2">Tùy chỉnh nhân viên số</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Tích hợp với tông màu thương hiệu doanh nghiệp, tạo <strong>hình ảnh và phong cách tương tác nhân vật số thương hiệu độc quyền</strong></p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-500">' +
+          '<div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-green-500 dark:border-green-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-bullhorn"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-green-800 mb-2">Nội dung tuyên truyền & đào tạo đại diện</h4>' +
-                '<p class="text-gray-700 text-sm">Đội ngũ chuyên nghiệp <strong>phục vụ một kèm một</strong>, đại diện tạo, đào tạo và tối ưu hóa nội dung</p>' +
+                '<h4 class="text-lg font-bold text-green-800 dark:text-green-200 mb-2">Nội dung tuyên truyền & đào tạo đại diện</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Đội ngũ chuyên nghiệp <strong>phục vụ một kèm một</strong>, đại diện tạo, đào tạo và tối ưu hóa nội dung</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border-l-4 border-purple-500">' +
+          '<div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-purple-500 dark:border-purple-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-tv"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-purple-800 mb-2">Tùy chỉnh thiết bị hiển thị</h4>' +
-                '<p class="text-gray-700 text-sm">Cung cấp <strong>kích thước lớn, bán trong suốt, 3D không kính</strong> và các dạng phần cứng đa dạng khác để phù hợp với các kịch bản tiếp thị ngoại tuyến khác nhau</p>' +
+                '<h4 class="text-lg font-bold text-purple-800 dark:text-purple-200 mb-2">Tùy chỉnh thiết bị hiển thị</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Cung cấp <strong>kích thước lớn, bán trong suốt, 3D không kính</strong> và các dạng phần cứng đa dạng khác để phù hợp với các kịch bản tiếp thị ngoại tuyến khác nhau</p>' +
               '</div>' +
             '</div>' +
           '</div>' +
 
-          '<div class="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border-l-4 border-orange-500">' +
+          '<div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border-l-4 border-orange-500 dark:border-orange-400">' +
             '<div class="flex items-start gap-4">' +
-              '<div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
+              '<div class="w-10 h-10 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">' +
                 '<i class="fas fa-draw-polygon"></i>' +
               '</div>' +
               '<div class="flex-1">' +
-                '<h4 class="text-lg font-bold text-orange-800 mb-2">Thiết kế tiếp thị AI toàn kịch bản</h4>' +
-                '<p class="text-gray-700 text-sm">Thiết kế hoàn chỉnh giải pháp tiếp thị ngoại tuyến AI dựa trên hội chợ, cửa hàng, phòng trưng bày và các kịch bản khác, <strong>nâng cấp AI toàn diện không có điểm chết</strong></p>' +
+                '<h4 class="text-lg font-bold text-orange-800 dark:text-orange-200 mb-2">Thiết kế tiếp thị AI toàn kịch bản</h4>' +
+                '<p class="text-gray-700 dark:text-gray-300 text-sm">Thiết kế hoàn chỉnh giải pháp tiếp thị ngoại tuyến AI dựa trên hội chợ, cửa hàng, phòng trưng bày và các kịch bản khác, <strong>nâng cấp AI toàn diện không có điểm chết</strong></p>' +
               '</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
 
-        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 p-6 rounded-xl border border-gray-200">' +
-          '<h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">' +
-            '<i class="fas fa-cogs text-gray-600"></i>' +
+        '<div class="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl border border-gray-200 dark:border-gray-500">' +
+          '<h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">' +
+            '<i class="fas fa-cogs text-gray-600 dark:text-gray-400"></i>' +
             'Quy trình dịch vụ tùy chỉnh' +
           '</h4>' +
           '<div class="grid md:grid-cols-4 gap-4">' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
-              '<p class="text-sm font-medium text-gray-700">Phân tích nhu cầu</p>' +
+              '<div class="w-8 h-8 bg-blue-500 dark:bg-blue-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">1</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Phân tích nhu cầu</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
-              '<p class="text-sm font-medium text-gray-700">Thiết kế giải pháp</p>' +
+              '<div class="w-8 h-8 bg-green-500 dark:bg-green-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">2</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Thiết kế giải pháp</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
-              '<p class="text-sm font-medium text-gray-700">Phát triển tùy chỉnh</p>' +
+              '<div class="w-8 h-8 bg-purple-500 dark:bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">3</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Phát triển tùy chỉnh</p>' +
             '</div>' +
             '<div class="text-center">' +
-              '<div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
-              '<p class="text-sm font-medium text-gray-700">Triển khai ra mắt</p>' +
+              '<div class="w-8 h-8 bg-orange-500 dark:bg-orange-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-2">4</div>' +
+              '<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Triển khai ra mắt</p>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -1263,6 +1288,9 @@ const toggleLangMenu = () => {
 
 // 点击外部关闭下拉菜单
 onMounted(() => {
+  // 设置默认的亮色模式
+  document.documentElement.classList.add('light-mode');
+
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (!target.closest('.relative')) {
@@ -1281,22 +1309,42 @@ window.addEventListener('scroll', () => {
 });
 </script>
 <style scoped>
-::-webkit-scrollbar {
+/* 亮色模式滚动条 */
+.light-mode ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+.light-mode ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-::-webkit-scrollbar-thumb {
+.light-mode ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.light-mode ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* 夜间模式滚动条 */
+.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 
 /* 移动端滑动菜单动画 */
